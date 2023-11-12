@@ -1,12 +1,10 @@
 'use client'
 
-import { Fragment, FragmentCanvas } from '@/components/FragmentCanvas'
+import BasicFragmentShader from '@/components/shaders/BasicFragmentShader'
 import fragmentShader from './fragment.glsl'
 
 export default function Page() {
   return (
-    <FragmentCanvas>
-      <Fragment fragmentShader={fragmentShader} />
-    </FragmentCanvas>
+      <BasicFragmentShader fragmentShader={fragmentShader} />
   )
 }

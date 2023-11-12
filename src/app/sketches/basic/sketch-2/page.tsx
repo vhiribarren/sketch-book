@@ -1,10 +1,11 @@
 'use client'
 
-import { Canvas, useThree, useFrame } from "@react-three/fiber";
-import { Mesh, ShaderMaterial } from 'three';
-import { useMemo, useRef, useState } from "react";
+import { useFrame } from "@react-three/fiber";
+import { ShaderMaterial } from 'three';
+import { useRef } from "react";
 import fragmentShader from './fragment.glsl'
-import { FragmentCanvas, Fragment } from "@/components/FragmentCanvas";
+import Fragment from "@/components/shaders/Fragment";
+import FragmentCanvas from "@/components/shaders/FragmentCanvas";
 
 function MyFragment() {
   const materialRef = useRef(null!);

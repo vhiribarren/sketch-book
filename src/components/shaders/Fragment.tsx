@@ -1,13 +1,7 @@
-'use client'
-
-import { Canvas, useThree } from "@react-three/fiber";
-import { ForwardedRef, ReactNode, forwardRef, useMemo } from "react";
+import { useThree } from "@react-three/fiber";
+import { ForwardedRef, forwardRef, useMemo } from "react";
 import { ShaderMaterial } from "three";
 
-
-type FragmentCanvasProps = {
-    children: ReactNode
-};
 
 type FragmentProps = {
     fragmentShader: string;
@@ -25,18 +19,11 @@ const VERTEX_SHADER = `
     }
 `;
 
-function FragmentCanvas({children}: FragmentCanvasProps) {
-    return (
-        <Canvas camera={{ position: [0.0, 0.0, 1.0] }}>
-            {children}
-        </Canvas>
-    );
-}
-
 const Fragment = forwardRef(
     function Fragment(props: FragmentProps, ref: ForwardedRef<ShaderMaterial>) {
         const { fragmentShader, uniforms } = props;
         const viewport = useThree(state => state.viewport)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         const memoizedUniforms = useMemo( () => uniforms, []);
         return (
             <mesh position={[0, 0, 0]} scale={[viewport.width, viewport.height, 1]}>
@@ -52,4 +39,4 @@ const Fragment = forwardRef(
     }
 );
 
-export {FragmentCanvas, Fragment};
+export default Fragment;
