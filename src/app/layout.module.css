@@ -1,0 +1,21 @@
+.mainlayout {
+    height: 100%;
+}
+
+.header {
+    background: #fff;
+    z-index: 1;
+    width: 100%;
+    box-shadow: 0 2px 8px #ccc;
+    padding: 0 5px;
+    font-size: xx-large;
+}
+
+.footer {
+    text-align: center;
+    position: sticky;
+    bottom: 0;
+    padding: 6px 24px;
+    width: 100%;
+    box-shadow: 0 2px 8px #ccc;
+}
