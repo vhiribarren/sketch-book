@@ -1,10 +1,10 @@
 'use client'
 
+import ManagedFragmentShader from '@/components/shaders/ManagedFragmentShader';
 import fragmentShader from './fragment.glsl'
-import BasicFragmentShader from "@/components/shaders/BasicFragmentShader";
 
 export default function Page() {
   return (
-    <BasicFragmentShader fragmentShader={fragmentShader} />
+    <ManagedFragmentShader fragmentShader={fragmentShader} />
   )
 }
