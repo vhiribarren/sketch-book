@@ -2,7 +2,7 @@
 
 import styles from './SideNav.module.css'
 import { Menu } from "antd";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const SKETCHES = [
@@ -24,7 +24,7 @@ function generateMenuItems(sketches: Array<any>, router: AppRouterInstance): Arr
             menuItem = { key: item.title, label: item.title, children: subMenuItems };
         }
         else {
-            menuItem = { key: item.title, label: item.title, onClick: () => router.push(item.url) };
+            menuItem = { key: item.url, label: item.title, onClick: () => router.push(item.url) };
         }
         menu.push(menuItem);
     }
@@ -33,6 +33,7 @@ function generateMenuItems(sketches: Array<any>, router: AppRouterInstance): Arr
 
 
 export default function SideNav() {
+    const pathname = usePathname();
     const router = useRouter();
     const items = generateMenuItems(SKETCHES, router);
     return (
@@ -41,6 +42,7 @@ export default function SideNav() {
                 mode="inline"
                 items={items}
                 theme="dark"
+                defaultSelectedKeys={[pathname]}
             />
         </>
     );
