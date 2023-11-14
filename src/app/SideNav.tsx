@@ -11,6 +11,8 @@ const SKETCHES = [
         title: "Basic", children: [
             { title: "Sketch 1", url: "/sketches/basic/sketch-1" },
             { title: "Sketch 2", url: "/sketches/basic/sketch-2" },
+            { title: "White Noise", url: "/sketches/basic/white-noise" },
+
         ]
     }
 ]
