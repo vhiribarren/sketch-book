@@ -22,7 +22,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <Layout className={styles.mainlayout}>
           <Header className={styles.header}>Sketch Book</Header>
           <Layout hasSider>
-            <Sider>
+            <Sider breakpoint="md" collapsedWidth="0">
               <SideNav />
             </Sider>
             <Content>
