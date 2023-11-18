@@ -2,7 +2,7 @@
 
 import { ForwardedRef, forwardRef, useRef } from "react";
 import { ShaderMaterial } from "three";
-import { Slider } from 'antd';
+import { Slider } from '@mantine/core';
 import Fragment from "@/components/shaders/Fragment";
 import FragmentCanvas from "@/components/shaders/FragmentCanvas";
 import fragmentShader from './fragment.glsl'
@@ -30,10 +30,10 @@ export default function Page() {
     };
     return (
         <>
-            <Slider min={2} max={500} defaultValue={30} tooltip={{ open: true }} onChange={onFreqChange} />
             <FragmentCanvas>
                 <WhiteNoiseFragment ref={materialRef} />
             </FragmentCanvas>
+            <Slider min={2} max={500} defaultValue={30} labelAlwaysOn={true} onChange={onFreqChange} />
         </>
 
     )

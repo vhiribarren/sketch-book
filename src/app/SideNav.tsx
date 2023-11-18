@@ -1,51 +1,32 @@
 "use client";
 
 import styles from './SideNav.module.css'
-import { Menu } from "antd";
+import { LinksGroup } from '../components/NavbarLinksGroup/NavbarLinksGroup';
 import { usePathname, useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { IconFolder } from '@tabler/icons-react';
 
 const SKETCHES = [
-    { title: "Welcome", url: "/" },
+    { label: "Welcome", link: "/"},
     {
-        title: "Basic", children: [
-            { title: "Sketch 1", url: "/sketches/basic/sketch-1" },
-            { title: "Sketch 2", url: "/sketches/basic/sketch-2" },
-            { title: "White Noise", url: "/sketches/basic/white-noise" },
-
+        label: "Basic", links: [
+            { label: "Sketch 1", link: "/sketches/basic/sketch-1" },
+            { label: "Sketch 2", link: "/sketches/basic/sketch-2" },
+            { label: "White Noise", link: "/sketches/basic/white-noise" },
         ]
     }
 ]
-
-function generateMenuItems(sketches: Array<any>, router: AppRouterInstance): Array<any> {
-    const menu = []
-    for (const item of sketches) {
-        let menuItem = null;
-        if ("children" in item) {
-            let subMenuItems = generateMenuItems(item.children, router);
-            menuItem = { key: item.title, label: item.title, children: subMenuItems };
-        }
-        else {
-            menuItem = { key: item.url, label: item.title, onClick: () => router.push(item.url) };
-        }
-        menu.push(menuItem);
-    }
-    return menu;
-}
 
 
 export default function SideNav() {
     const pathname = usePathname();
     const router = useRouter();
-    const items = generateMenuItems(SKETCHES, router);
+
+    const links = SKETCHES.map((item) => <LinksGroup {...item} key={item.label} />);
+
     return (
         <>
-            <Menu
-                mode="inline"
-                items={items}
-                theme="dark"
-                defaultSelectedKeys={[pathname]}
-            />
+            {links}
         </>
     );
 }

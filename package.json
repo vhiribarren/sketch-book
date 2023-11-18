@@ -13,6 +13,7 @@
     "@mantine/hooks": "^7.2.2",
     "@react-three/drei": "^9.88.13",
     "@react-three/fiber": "^8.15.10",
+    "@tabler/icons-react": "^2.40.0",
     "@types/three": "^0.158.2",
     "next": "14.0.2",
     "react": "^18",

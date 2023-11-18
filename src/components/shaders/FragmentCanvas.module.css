@@ -1,3 +1,4 @@
 .stats {
     position: absolute !important ;
+    z-index: 10 !important ;
 }

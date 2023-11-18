@@ -1,9 +1,10 @@
-import { Spin } from 'antd';
+import { Loader, Center } from '@mantine/core';
 import styles from "./loading.module.css";
 
 export default function Loading() {
   return (
-    <Spin size="large" tip="Loading..." wrapperClassName={styles.spinWrapper}>
-      <div className={styles.spinContent} />
-    </Spin>)
+    <Center className={styles.spinWrapper}>
+      <Loader color="blue" />
+    </Center> 
+  );
 }
