@@ -4,7 +4,7 @@ import '@mantine/core/styles.css';
 
 import { MantineProvider, Text, AppShell, Burger, Center, Group, ScrollArea } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import SideNav from './SideNav';
+import NavbarMenu from '../components/NavbarMenu/NavbarMenu';
 import { Inter } from 'next/font/google'
 
 import './globals.css'
@@ -15,8 +15,12 @@ type RootLayoutProps = { children: React.ReactNode };
 
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
-  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
+
+  const [mobileOpened, { toggle: toggleMobile, close: closeMobile  }] = useDisclosure();
+  const [desktopOpened, { toggle: toggleDesktop}] = useDisclosure(true);
+  
+  const onNavbarMenuSelection = () => closeMobile();
+
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -39,7 +43,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </AppShell.Header>
             <AppShell.Navbar p="md">
               <AppShell.Section grow component={ScrollArea}>
-                <SideNav />
+                <NavbarMenu onMenuSelection={onNavbarMenuSelection} />
               </AppShell.Section>
               <AppShell.Section>
                 <Text ta="center" size="sm">Copyright (c) 2023</Text>
