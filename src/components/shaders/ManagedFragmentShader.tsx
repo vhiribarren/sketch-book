@@ -1,38 +1,36 @@
 'use client'
 
-import { useFrame } from "@react-three/fiber";
 import { ShaderMaterial } from 'three';
 import { useRef } from "react";
-import Fragment from "@/components/shaders/Fragment";
 import { FragmentView } from "./FragmentView";
+import { RenderCallback } from '@react-three/fiber';
 
 type ManagedFragmentShaderProps = {
   fragmentShader: string,
 }
 
-function FragmentWithManagedUniforms({ fragmentShader }: ManagedFragmentShaderProps) {
-  const materialRef = useRef(null!);
-  const uniforms = {
-    u_time: {
-      type: "f",
-      value: 1.0,
-    },
-  };
-
-  useFrame((state) => {
-    const { clock } = state;
-    (materialRef.current as ShaderMaterial).uniforms.u_time.value = clock.getElapsedTime();
-  });
-
-  return (
-    <Fragment fragmentShader={fragmentShader} uniforms={uniforms} ref={materialRef} />
-  )
-}
+const UNIFORMS = {
+  u_time: {
+    value: 1.0,
+  },
+};
 
 export default function ManagedFragmentShader({ fragmentShader }: ManagedFragmentShaderProps) {
+
+  const materialRef = useRef(null!);
+
+  const useFrameFn: RenderCallback = (state) => {
+    const { clock } = state;
+    if (materialRef.current) {
+      (materialRef.current as ShaderMaterial).uniforms.u_time.value = clock.getElapsedTime();
+    }
+  }
+
   return (
     <FragmentView
-      fragment={<FragmentWithManagedUniforms fragmentShader={fragmentShader} />}
-    />
+      fragmentShader={fragmentShader}
+      uniforms={UNIFORMS}
+      useFrameFn={useFrameFn}
+      materialRef={materialRef} />
   )
 }

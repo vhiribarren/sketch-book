@@ -25,17 +25,14 @@ export default function Page() {
 
     return (
         <FragmentView
-            fragment={
-                <Fragment fragmentShader={fragmentShader} uniforms={UNIFORMS} ref={materialRef} />
-            }
-            control={<>
-                <Group wrap="nowrap">
-                    <Slider onChange={setFrequence} value={typeof frequence === 'string' ? 0 : frequence} style={{ minWidth: 200 }} min={2} max={500} />
-                    <NumberInput onChange={setFrequence} value={frequence} min={2} max={500} />
-                </Group>
-                <Text>Height frequency</Text>
-            </>
-            }
-        />
+            fragmentShader={fragmentShader}
+            uniforms={UNIFORMS}
+            materialRef={materialRef}>
+            <Group wrap="nowrap">
+                <Slider onChange={setFrequence} value={typeof frequence === 'string' ? 0 : frequence} style={{ minWidth: 200 }} min={2} max={500} />
+                <NumberInput onChange={setFrequence} value={frequence} min={2} max={500} />
+            </Group>
+            <Text>Height frequency</Text>
+        </FragmentView>
     );
 }
