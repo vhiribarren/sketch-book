@@ -35,9 +35,13 @@ export function FragmentView({ fragmentShader, uniforms, children, materialRef, 
                     materialRef={materialRef} />
             </FragmentCanvas>
             {children &&
-                <div>
+            <Flex
+            direction={{ base: 'row', sm: 'column' }}
+            gap="20"
+            justify="center"
+            align="center">
                     {children}
-                </div>
+                </Flex>
             }
         </Flex>
         </Stack>

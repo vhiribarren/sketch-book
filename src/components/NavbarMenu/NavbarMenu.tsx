@@ -12,6 +12,8 @@ const SKETCHES = [
             { title: "Sketch 1", slug: "/sketches/basic/sketch-1" },
             { title: "Sketch 2", slug: "/sketches/basic/sketch-2" },
             { title: "White Noise", slug: "/sketches/basic/white-noise" },
+            { title: "Value Noise", slug: "/sketches/basic/value-noise" },
+
         ]
     }
 ]
