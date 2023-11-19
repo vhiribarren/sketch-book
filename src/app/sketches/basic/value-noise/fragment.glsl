@@ -2,6 +2,8 @@ uniform uint u_freq_count;
 uniform float u_freq_base;
 uniform float u_lacunarity;
 uniform float u_gain;
+uniform float u_shift_x;
+uniform float u_shift_y;
 
 varying vec2 v_uv;
 
@@ -24,8 +26,8 @@ float average_noise_smoothstep(vec2 scaled_uv) {
 void main() {
     vec2 size = gl_FragCoord.xy / v_uv;
     float ratio = size.x / size.y;
-    float scaled_u = v_uv.x * u_freq_base * ratio;
-    float scaled_v = v_uv.y * u_freq_base;
+    float scaled_u = v_uv.x * u_freq_base * ratio + u_shift_x;
+    float scaled_v = v_uv.y * u_freq_base + u_shift_y;
     float noise_val = 0.0;
     float freq = u_freq_base;
     float amp = 1.0;

@@ -19,6 +19,12 @@ const UNIFORMS = {
     u_gain: {
         value: 0.5,
     },
+    u_shift_x: {
+        value: 0.0,
+    },
+    u_shift_y: {
+        value: 0.0,
+    },
 };
 
 export default function Page() {
@@ -27,6 +33,8 @@ export default function Page() {
     const [freqBase, setFreqBase] = useState<number | string>(UNIFORMS.u_freq_base.value);
     const [lacunarity, setLacunarity] = useState<number | string>(UNIFORMS.u_lacunarity.value);
     const [gain, setGain] = useState<number | string>(UNIFORMS.u_gain.value);
+    const [shiftX, setShiftX] = useState<number | string>(UNIFORMS.u_shift_x.value);
+    const [shiftY, setShiftY] = useState<number | string>(UNIFORMS.u_shift_y.value);
 
     const materialRef = useCallback((material: ShaderMaterial) => {
         if (material !== null) {
@@ -34,8 +42,10 @@ export default function Page() {
             material.uniforms.u_freq_base.value = freqBase;
             material.uniforms.u_lacunarity.value = lacunarity;
             material.uniforms.u_gain.value = gain;
+            material.uniforms.u_shift_x.value = shiftX;
+            material.uniforms.u_shift_y.value = shiftY;
         }
-    }, [freqCount, freqBase, lacunarity, gain]) as unknown as RefObject<ShaderMaterial>;
+    }, [freqCount, freqBase, lacunarity, gain, shiftX, shiftY]) as unknown as RefObject<ShaderMaterial>;
 
     return (
         <FragmentView
@@ -48,6 +58,8 @@ export default function Page() {
             <NumberInput label="Base frequence" onChange={setFreqBase} value={freqBase} min={0.0} decimalScale={2} />
             <NumberInput label="Lacunarity" onChange={setLacunarity} value={lacunarity} min={0.0} step={0.1} decimalScale={2} />
             <NumberInput label="Gain" onChange={setGain} value={gain} min={0.0} step={0.1} decimalScale={2} />
+            <NumberInput label="Shift X" onChange={setShiftX} value={shiftX} step={0.1} decimalScale={2} />
+            <NumberInput label="Shift Y" onChange={setShiftY} value={shiftY} step={0.1} decimalScale={2} />
 
         </FragmentView>
     );
