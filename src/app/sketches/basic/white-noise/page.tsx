@@ -1,12 +1,11 @@
 'use client'
 
-import { ForwardedRef, forwardRef, useRef } from "react";
+import { ForwardedRef, forwardRef, useEffect, useRef, useState } from "react";
 import { ShaderMaterial } from "three";
-import { Slider, Flex, Space, Text } from '@mantine/core';
+import { Group, NumberInput, Slider, Text } from '@mantine/core';
 import Fragment from "@/components/shaders/Fragment";
-import FragmentCanvas from "@/components/shaders/FragmentCanvas";
 import fragmentShader from './fragment.glsl'
-import { FragmentCanvasWithControl } from "@/components/shaders/FragmentCanvasWithControl";
+import { FragmentView } from "@/components/shaders/FragmentView";
 
 
 const WhiteNoiseFragment = forwardRef(
@@ -25,19 +24,26 @@ const WhiteNoiseFragment = forwardRef(
 
 
 export default function Page() {
+    const [frequence, setFrequence] = useState<number | string>(4);
     const materialRef = useRef<ShaderMaterial>(null);
-    const onFreqChange = (newValue: number) => {
-        (materialRef.current as ShaderMaterial).uniforms.u_frequence.value = newValue;
-    };
+    useEffect(() => {
+        if ( ! materialRef.current ) {
+            return;
+        }
+        (materialRef.current as ShaderMaterial).uniforms.u_frequence.value = frequence;
+    }, [frequence]);
     return (
-        <FragmentCanvasWithControl
+        <FragmentView
             fragment={
                 <WhiteNoiseFragment ref={materialRef} />
             }
             control={<>
-                <Slider style={{ minWidth: 200 }} min={2} max={500} defaultValue={30} labelAlwaysOn={true} onChange={onFreqChange} />
+                <Group wrap="nowrap">
+                    <Slider value={typeof frequence === 'string' ? 0 : frequence} style={{ minWidth: 200 }} min={2} max={500} defaultValue={30} onChange={setFrequence} />
+                    <NumberInput value={frequence} onChange={setFrequence} />
+                </Group>
                 <Text>Height frequency</Text>
-                </>
+            </>
             }
         />
     );

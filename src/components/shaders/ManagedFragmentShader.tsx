@@ -4,20 +4,20 @@ import { useFrame } from "@react-three/fiber";
 import { ShaderMaterial } from 'three';
 import { useRef } from "react";
 import Fragment from "@/components/shaders/Fragment";
-import FragmentCanvas from "@/components/shaders/FragmentCanvas";
+import { FragmentView } from "./FragmentView";
 
 type ManagedFragmentShaderProps = {
-    fragmentShader: string,
+  fragmentShader: string,
 }
 
 function FragmentWithManagedUniforms({ fragmentShader }: ManagedFragmentShaderProps) {
   const materialRef = useRef(null!);
   const uniforms = {
-      u_time: {
-        type: "f",
-        value: 1.0,
-      },
-    };
+    u_time: {
+      type: "f",
+      value: 1.0,
+    },
+  };
 
   useFrame((state) => {
     const { clock } = state;
@@ -31,8 +31,8 @@ function FragmentWithManagedUniforms({ fragmentShader }: ManagedFragmentShaderPr
 
 export default function ManagedFragmentShader({ fragmentShader }: ManagedFragmentShaderProps) {
   return (
-    <FragmentCanvas>
-      <FragmentWithManagedUniforms fragmentShader={fragmentShader}  />
-    </FragmentCanvas>
+    <FragmentView
+      fragment={<FragmentWithManagedUniforms fragmentShader={fragmentShader} />}
+    />
   )
 }
