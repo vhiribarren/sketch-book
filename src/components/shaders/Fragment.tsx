@@ -1,5 +1,5 @@
 import { RenderCallback, useFrame, useThree } from "@react-three/fiber";
-import { Ref, useEffect, useMemo } from "react";
+import { RefObject, useEffect, useMemo } from "react";
 import { ShaderMaterial } from "three";
 
 
@@ -7,7 +7,7 @@ type FragmentProps = {
     fragmentShader: string,
     uniforms?: any,
     useFrameFn?: RenderCallback,
-    materialRef?: Ref<ShaderMaterial>
+    materialRef?: RefObject<ShaderMaterial>
 };
 
 const VERTEX_SHADER = `

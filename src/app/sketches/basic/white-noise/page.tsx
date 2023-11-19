@@ -1,9 +1,8 @@
 'use client'
 
-import { ForwardedRef, forwardRef, useCallback, useState } from "react";
+import { RefObject, useCallback, useState } from "react";
 import { ShaderMaterial } from "three";
 import { Group, NumberInput, Slider, Text } from '@mantine/core';
-import Fragment from "@/components/shaders/Fragment";
 import fragmentShader from './fragment.glsl'
 import { FragmentView } from "@/components/shaders/FragmentView";
 
@@ -21,7 +20,7 @@ export default function Page() {
         if (material !== null) {
             material.uniforms.u_frequence.value = frequence;
         }
-    }, [frequence]);
+    }, [frequence]) as unknown as RefObject<ShaderMaterial>;
 
     return (
         <FragmentView

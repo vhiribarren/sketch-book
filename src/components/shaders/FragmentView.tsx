@@ -1,6 +1,6 @@
 import { Flex } from "@mantine/core";
 import FragmentCanvas from "./FragmentCanvas";
-import React, { Ref } from "react";
+import React, { RefObject } from "react";
 import Fragment from "./Fragment";
 import { ShaderMaterial } from "three";
 import { RenderCallback } from "@react-three/fiber";
@@ -8,7 +8,7 @@ import { RenderCallback } from "@react-three/fiber";
 type FragmentView = {
     fragmentShader: string,
     uniforms?: any,
-    materialRef?: Ref<ShaderMaterial>
+    materialRef?: RefObject<ShaderMaterial>
     children?: React.ReactNode,
     useFrameFn?: RenderCallback,
 };
