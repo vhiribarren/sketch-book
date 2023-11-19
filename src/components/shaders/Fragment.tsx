@@ -1,5 +1,5 @@
 import { RenderCallback, useFrame, useThree } from "@react-three/fiber";
-import { Ref, useMemo } from "react";
+import { Ref, useEffect, useMemo } from "react";
 import { ShaderMaterial } from "three";
 
 
@@ -29,6 +29,11 @@ function Fragment({ fragmentShader, uniforms, useFrameFn, materialRef }: Fragmen
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useFrame(useFrameFn);
     }
+    useEffect(() => {
+        if (materialRef && materialRef.current) {
+            materialRef.current.needsUpdate = true;
+        }
+    });
     return (
         <mesh position={[0, 0, 0]} scale={[viewport.width, viewport.height, 1]}>
             <planeGeometry args={[1, 1]} />
