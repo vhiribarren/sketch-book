@@ -1,4 +1,4 @@
-import { Flex } from "@mantine/core";
+import { Flex, Stack, Text, Title } from "@mantine/core";
 import FragmentCanvas from "./FragmentCanvas";
 import React, { RefObject } from "react";
 import Fragment from "./Fragment";
@@ -11,16 +11,22 @@ type FragmentView = {
     materialRef?: RefObject<ShaderMaterial>
     children?: React.ReactNode,
     useFrameFn?: RenderCallback,
+    title?: string,
+    description?: string,
 };
 
-export function FragmentView({ fragmentShader, uniforms, children, materialRef, useFrameFn }: FragmentView) {
+export function FragmentView({ fragmentShader, uniforms, children, materialRef, useFrameFn, title, description }: FragmentView) {
     return (
-        <Flex
-            direction={{ base: 'column', sm: 'row' }}
-            gap="20"
-            justify="center"
-            align="center"
-            style={{ height: "100%" }}>
+        <Stack style={{ height: "100%" }}>
+            {title &&<Title order={1}>{title}</Title>}
+            {description && <Text>{description}</Text>}
+            <Flex
+                direction={{ base: 'column', sm: 'row' }}
+                gap="20"
+                justify="center"
+                align="center"
+                style={{ height: "100%" }}>
+
             <FragmentCanvas>
                 <Fragment
                     uniforms={uniforms}
@@ -34,5 +40,6 @@ export function FragmentView({ fragmentShader, uniforms, children, materialRef, 
                 </div>
             }
         </Flex>
+        </Stack>
     );
 }

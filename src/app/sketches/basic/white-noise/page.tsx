@@ -24,6 +24,8 @@ export default function Page() {
 
     return (
         <FragmentView
+            title="White Noise"
+            description="Simple raw white noise without any processing. Frequency can be modified."
             fragmentShader={fragmentShader}
             uniforms={UNIFORMS}
             materialRef={materialRef}>
