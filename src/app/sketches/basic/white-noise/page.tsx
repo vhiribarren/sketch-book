@@ -2,10 +2,11 @@
 
 import { ForwardedRef, forwardRef, useRef } from "react";
 import { ShaderMaterial } from "three";
-import { Slider } from '@mantine/core';
+import { Slider, Flex, Space, Text } from '@mantine/core';
 import Fragment from "@/components/shaders/Fragment";
 import FragmentCanvas from "@/components/shaders/FragmentCanvas";
 import fragmentShader from './fragment.glsl'
+import { FragmentCanvasWithControl } from "@/components/shaders/FragmentCanvasWithControl";
 
 
 const WhiteNoiseFragment = forwardRef(
@@ -29,12 +30,15 @@ export default function Page() {
         (materialRef.current as ShaderMaterial).uniforms.u_frequence.value = newValue;
     };
     return (
-        <>
-            <FragmentCanvas>
+        <FragmentCanvasWithControl
+            fragment={
                 <WhiteNoiseFragment ref={materialRef} />
-            </FragmentCanvas>
-            <Slider min={2} max={500} defaultValue={30} labelAlwaysOn={true} onChange={onFreqChange} />
-        </>
-
-    )
+            }
+            control={<>
+                <Slider style={{ minWidth: 200 }} min={2} max={500} defaultValue={30} labelAlwaysOn={true} onChange={onFreqChange} />
+                <Text>Height frequency</Text>
+                </>
+            }
+        />
+    );
 }
