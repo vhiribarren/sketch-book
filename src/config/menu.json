@@ -1,0 +1,23 @@
+[{
+    "group": "Basic",
+    "pages": [{
+            "title": "Static Gradient",
+            "slug": "/sketches/basic/static-gradient"
+        },
+        {
+            "title": "Time Gradient",
+            "slug": "/sketches/basic/time-gradient"
+        }
+    ]
+}, {
+    "group": "Noise",
+    "pages": [{
+            "title": "White Noise",
+            "slug": "/sketches/noise/white-noise"
+        },
+        {
+            "title": "Value Noise",
+            "slug": "/sketches/noise/value-noise"
+        }
+    ]
+}]

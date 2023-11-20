@@ -5,7 +5,7 @@ import { IconChevronDown } from '@tabler/icons-react';
 import { UnstyledButton, Text, Box } from '@mantine/core';
 import classes from './NavbarLinksGroup.module.css';
 
-type LinkGroup = {
+export type LinkGroup = {
   group: string;
   pages: PageLink[];
 }

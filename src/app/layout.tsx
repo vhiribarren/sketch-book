@@ -9,6 +9,7 @@ import { Inter } from 'next/font/google'
 import { Settings } from './Context';
 
 import './globals.css'
+import menuContent from '../config/menu.json'
 import { useState } from 'react';
 
 const inter = Inter({ subsets: ['latin'] })
@@ -33,7 +34,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <AppShell
               header={{ height: 60 }}
               navbar={{
-                width: 200,
+                width: 220,
                 breakpoint: 'sm',
                 collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
               }}
@@ -47,7 +48,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               </AppShell.Header>
               <AppShell.Navbar p="md">
                 <AppShell.Section grow component={ScrollArea}>
-                  <NavbarMenu onMenuSelection={onNavbarMenuSelection} />
+                  <NavbarMenu onMenuSelection={onNavbarMenuSelection} menuContent={menuContent}/>
                 </AppShell.Section>
                 <AppShell.Section>
                   <Switch label="Display FPS" onChange={(event) => setDisplayFps(event.currentTarget.checked)} checked={displayFps} />
