@@ -22,6 +22,16 @@ float average_noise_smoothstep(vec2 scaled_uv) {
     return mix(top_avg, bottom_avg, percent.y);
 }
 
+float average_noise_mix(vec2 scaled_uv) {
+    float rand_tl = random(floor(scaled_uv));
+    float rand_tr = random(floor(scaled_uv + vec2(1.0, 0.0)));
+    float rand_bl = random(floor(scaled_uv + vec2(0.0, 1.0)));
+    float rand_br = random(ceil(scaled_uv));
+    float top_avg = mix(rand_tl, rand_tr, fract(scaled_uv.x));
+    float bottom_avg = mix(rand_bl, rand_br, fract(scaled_uv.x));
+    return mix(top_avg, bottom_avg, fract(scaled_uv.y));
+}
+
 
 void main() {
     vec2 size = gl_FragCoord.xy / v_uv;
