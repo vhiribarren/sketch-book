@@ -49,7 +49,6 @@ export function FragmentView({ fragmentShader, uniforms, children, materialRef, 
                 </FragmentCanvas>
                 {children &&
                     <Drawer
-                        style={{ height: "100%", width: "100%" }}
                         classNames={{ inner: styles.inner, content: styles.content }}
                         title="Parameters"
                         opened={isDrawerOpened}
@@ -64,7 +63,14 @@ export function FragmentView({ fragmentShader, uniforms, children, materialRef, 
                             : { target: drawerTargetRef.current as HTMLElement }
                         }
                         position={isMobile ? "bottom" : "right"}>
-                        {children}
+                        <Flex
+                            direction={isDesktop ? 'column' : 'row'}
+                            justify="center"
+                            align="flex-end"
+                            wrap="wrap"
+                            gap={10}>
+                            {children}
+                        </Flex>
                     </Drawer>
                 }
             </Flex>
@@ -75,7 +81,7 @@ export function FragmentView({ fragmentShader, uniforms, children, materialRef, 
                         <IconAdjustments style={{ width: '70%', height: '70%' }} stroke={1.5} />
                     </ActionIcon>
                 </Affix>
-                    }
+            }
 
         </Stack>
 
