@@ -2,12 +2,16 @@ import { RenderCallback, useFrame, useThree } from "@react-three/fiber";
 import { RefObject, forwardRef, useEffect, useImperativeHandle, useMemo } from "react";
 import { ShaderMaterial } from "three";
 
-
 type FragmentProps = {
     fragmentShader: string,
     uniforms?: any,
     useFrameFn?: RenderCallback,
-    materialRef?: RefObject<ShaderMaterial>
+    materialRef?: RefObject<ShaderMaterial>,
+    fragmentRef?: RefObject<FragmentHandle>,
+};
+
+export type FragmentHandle = {
+    render: () => void;
 };
 
 const VERTEX_SHADER = `
@@ -21,8 +25,7 @@ const VERTEX_SHADER = `
     }
 `;
 
-const Fragment = forwardRef(function Fragment(props, ref) {
-    const { fragmentShader, uniforms, useFrameFn, materialRef } = props;
+function Fragment({ fragmentShader, uniforms, useFrameFn, materialRef, fragmentRef }: FragmentProps) {
     const { viewport, invalidate } = useThree()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const memoizedUniforms = useMemo(() => uniforms, []);
@@ -35,13 +38,13 @@ const Fragment = forwardRef(function Fragment(props, ref) {
             materialRef.current.needsUpdate = true;
         }
     });
-    useImperativeHandle(ref, () => {
+    useImperativeHandle(fragmentRef, () => {
         return {
             render() {
                 invalidate();
             }
         };
-    }, []);
+    });
     return (
         <mesh position={[0, 0, 0]} scale={[viewport.width, viewport.height, 1]}>
             <planeGeometry args={[1, 1]} />
@@ -53,6 +56,6 @@ const Fragment = forwardRef(function Fragment(props, ref) {
             />
         </mesh>
     );
-});
+}
 
 export default Fragment;

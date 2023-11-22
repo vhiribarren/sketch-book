@@ -5,6 +5,6 @@ import fragmentShader from './fragment.glsl'
 
 export default function Page() {
   return (
-    <ManagedFragmentShader fragmentShader={fragmentShader} />
+    <ManagedFragmentShader fragmentShader={fragmentShader} withTime={true}/>
   )
 }

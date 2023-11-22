@@ -5,6 +5,7 @@ import { ShaderMaterial } from "three";
 import { Group, NumberInput, Slider, Text } from '@mantine/core';
 import fragmentShader from './fragment.glsl'
 import { FragmentView } from "@/components/shaders/FragmentView";
+import { FragmentHandle } from "@/components/shaders/Fragment";
 
 const UNIFORMS = {
     u_frequence: {
@@ -15,7 +16,7 @@ const UNIFORMS = {
 export default function Page() {
 
     const [frequence, setFrequence] = useState<number | string>(UNIFORMS.u_frequence.value);
-    const fragmentRef = useRef();
+    const fragmentRef = useRef<FragmentHandle>(null);
     const materialRef = useCallback((material: ShaderMaterial) => {
         if (material !== null) {
             material.uniforms.u_frequence.value = frequence;

@@ -7,6 +7,7 @@ import { RenderCallback } from '@react-three/fiber';
 
 type ManagedFragmentShaderProps = {
   fragmentShader: string,
+  withTime: boolean,
 }
 
 const UNIFORMS = {
@@ -15,7 +16,7 @@ const UNIFORMS = {
   },
 };
 
-export default function ManagedFragmentShader({ fragmentShader }: ManagedFragmentShaderProps) {
+export default function ManagedFragmentShader({ fragmentShader, withTime }: ManagedFragmentShaderProps) {
 
   const materialRef = useRef(null!);
 
@@ -28,6 +29,7 @@ export default function ManagedFragmentShader({ fragmentShader }: ManagedFragmen
 
   return (
     <FragmentView
+      autoRender={withTime}
       fragmentShader={fragmentShader}
       uniforms={UNIFORMS}
       useFrameFn={useFrameFn}

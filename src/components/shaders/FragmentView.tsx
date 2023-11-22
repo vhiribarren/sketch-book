@@ -1,7 +1,7 @@
 import { ActionIcon, Affix, Drawer, Flex, Stack, Text, Title } from "@mantine/core";
 import FragmentCanvas from "./FragmentCanvas";
 import React, { RefObject, useRef } from "react";
-import Fragment from "./Fragment";
+import Fragment, { FragmentHandle } from "./Fragment";
 import { ShaderMaterial } from "three";
 import { RenderCallback } from "@react-three/fiber";
 import { useDisclosure, useViewportSize } from "@mantine/hooks";
@@ -12,14 +12,16 @@ import styles from "./FragmentView.module.css"
 type FragmentView = {
     fragmentShader: string,
     uniforms?: any,
-    materialRef?: RefObject<ShaderMaterial>
+    materialRef?: RefObject<ShaderMaterial>,
+    fragmentRef?: RefObject<FragmentHandle>,
     children?: React.ReactNode,
     useFrameFn?: RenderCallback,
     title?: string,
     description?: string,
+    autoRender?: boolean,
 };
 
-export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, materialRef, useFrameFn, title, description }: FragmentView) {
+export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, materialRef, useFrameFn, title, description, autoRender = false }: FragmentView) {
 
     const { width } = useViewportSize();
     const drawerTargetRef = useRef<HTMLDivElement>(null);
@@ -40,13 +42,14 @@ export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, 
                 align="center"
                 style={{ height: "100%" }}>
 
-                <FragmentCanvas>
+                <FragmentCanvas autoRender={autoRender}>
                     <Fragment
-                        ref={fragmentRef}
                         uniforms={uniforms}
                         fragmentShader={fragmentShader}
                         useFrameFn={useFrameFn}
-                        materialRef={materialRef} />
+                        materialRef={materialRef}
+                        fragmentRef={fragmentRef}
+                        />
                 </FragmentCanvas>
                 {children &&
                     <Drawer
