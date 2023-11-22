@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { IconChevronDown } from '@tabler/icons-react';
-import { UnstyledButton, Text, Box } from '@mantine/core';
-import classes from './NavbarLinksGroup.module.css';
+import React, { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { IconChevronDown } from "@tabler/icons-react";
+import { UnstyledButton, Text, Box } from "@mantine/core";
+import classes from "./NavbarLinksGroup.module.css";
 
 export type LinkGroup = {
   group: string;
@@ -62,11 +62,11 @@ export function NavbarLinksGroup({ data, onMenuSelection }: NavbarLinksGroupProp
       return;
     }
 
-    const height = typeof window !== 'undefined' ? window.innerHeight : 0;
+    const height = typeof window !== "undefined" ? window.innerHeight : 0;
     const { top, bottom } = element.getBoundingClientRect();
 
     if (top < 60 || bottom > height) {
-      element.scrollIntoView({ block: 'center' });
+      element.scrollIntoView({ block: "center" });
     }
   };
 
@@ -94,7 +94,7 @@ export function NavbarLinksGroup({ data, onMenuSelection }: NavbarLinksGroupProp
     <Box className={classes.group} mod={{ opened }}>
       <UnstyledButton className={classes.header} onClick={() => setOpened((o) => !o)}>
         <IconChevronDown className={classes.chevron} data-collapsed={!opened || undefined} />
-        <Text className={classes.title}>{data.group.replace('-', ' ')}</Text>
+        <Text className={classes.title}>{data.group.replace("-", " ")}</Text>
       </UnstyledButton>
       {opened && pages}
     </Box>

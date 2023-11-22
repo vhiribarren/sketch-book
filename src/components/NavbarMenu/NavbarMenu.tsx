@@ -1,6 +1,6 @@
 "use client";
 
-import { LinkGroup, MenuSelectionCallback, NavbarLink, NavbarLinksGroup } from './NavbarLinksGroup/NavbarLinksGroup';
+import { LinkGroup, MenuSelectionCallback, NavbarLink, NavbarLinksGroup } from "./NavbarLinksGroup/NavbarLinksGroup";
 
 type NavbarMenuProps = {
     onMenuSelection: MenuSelectionCallback,

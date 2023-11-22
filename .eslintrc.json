@@ -1,7 +1,28 @@
 {
-  "extends": "next/core-web-vitals",
-  "plugins": ["unused-imports"],
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "extends": [
+    "eslint:recommended",
+    "next/core-web-vitals"
+  ],
+  "plugins": [
+    "unused-imports", "@stylistic/js"
+  ],
   "rules": {
-    "unused-imports/no-unused-imports": "warn"
+    "unused-imports/no-unused-imports": "warn",
+    "@stylistic/js/semi": [
+      "warn",
+      "always"
+    ],
+    "@stylistic/js/quotes": [
+      "warn",
+      "double"
+    ]
   }
 }

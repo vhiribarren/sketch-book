@@ -1,20 +1,20 @@
 "use client";
 
-import '@mantine/core/styles.css';
+import "@mantine/core/styles.css";
 
-import { MantineProvider, Text, AppShell, Burger, Switch, Group, ScrollArea, Space } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import NavbarMenu from '../components/NavbarMenu/NavbarMenu';
-import { Inter } from 'next/font/google'
-import { Settings } from './Context';
+import { MantineProvider, Text, AppShell, Burger, Switch, Group, ScrollArea, Space } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import NavbarMenu from "../components/NavbarMenu/NavbarMenu";
+import { Inter } from "next/font/google";
+import { Settings } from "./Context";
 
-import './globals.css'
-import menuContent from '../config/menu.json'
-import { useState } from 'react';
+import "./globals.css";
+import menuContent from "../config/menu.json";
+import { ReactNode, useState } from "react";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
-type RootLayoutProps = { children: React.ReactNode };
+type RootLayoutProps = { children: ReactNode };
 
 
 export default function RootLayout({ children }: RootLayoutProps) {
@@ -35,7 +35,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               header={{ height: 60 }}
               navbar={{
                 width: 220,
-                breakpoint: 'sm',
+                breakpoint: "sm",
                 collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
               }}
               padding="md">
@@ -68,5 +68,5 @@ export default function RootLayout({ children }: RootLayoutProps) {
         </MantineProvider>
       </body>
     </html>
-  )
+  );
 }

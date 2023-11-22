@@ -27,7 +27,7 @@ const VERTEX_SHADER = `
 const Fragment = forwardRef(function Fragment(props: FragmentProps, ref: ForwardedRef<FragmentHandle>) {
     const { fragmentShader, uniforms, useFrameFn } = props;
     const materialRef = useRef<ShaderMaterial>(null);
-    const { viewport, invalidate } = useThree()
+    const { viewport, invalidate } = useThree();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const memoizedUniforms = useMemo(() => uniforms, []);
     if (useFrameFn) {

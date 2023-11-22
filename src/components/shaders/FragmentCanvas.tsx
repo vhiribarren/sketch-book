@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { Canvas } from "@react-three/fiber";
 import { StatsGl } from "@react-three/drei";
@@ -17,7 +17,7 @@ function FragmentCanvas({autoRender = false, children}: FragmentCanvasProps) {
     const parentParentRef = useRef<HTMLElement|null>(null);
     useEffect(() => {
         parentParentRef.current = canvasRef.current.parentElement;
-      }, [])
+      }, []);
     return (
         <Canvas ref={canvasRef} frameloop={autoRender ? "always" : "demand"} camera={{ position: [0.0, 0.0, 1.0] }}>
             {children}

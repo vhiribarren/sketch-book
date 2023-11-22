@@ -1,4 +1,4 @@
-import { Loader, Center } from '@mantine/core';
+import { Loader, Center } from "@mantine/core";
 import styles from "./loading.module.css";
 
 export default function Loading() {

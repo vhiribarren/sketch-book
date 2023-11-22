@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
 import { useCallback, useState } from "react";
-import { NumberInput } from '@mantine/core';
-import fragmentShader from './fragment.glsl'
+import { NumberInput } from "@mantine/core";
+import fragmentShader from "./fragment.glsl";
 import { FragmentView } from "@/components/shaders/FragmentView";
 import { FragmentHandle } from "@/components/shaders/Fragment";
 

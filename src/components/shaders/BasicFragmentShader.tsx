@@ -7,5 +7,5 @@ type BasicFragmentShaderProps = {
 export default function BasicFragmentShader({ fragmentShader }: BasicFragmentShaderProps) {
     return (
         <FragmentView fragmentShader={fragmentShader} />
-    )
+    );
 }

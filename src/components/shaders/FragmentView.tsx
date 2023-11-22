@@ -5,10 +5,10 @@ import Fragment, { FragmentHandle } from "./Fragment";
 import { RenderCallback } from "@react-three/fiber";
 import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import { IconAdjustments } from "@tabler/icons-react";
-import styles from "./FragmentView.module.css"
+import styles from "./FragmentView.module.css";
 
 
-type FragmentView = {
+type FragmentViewProps = {
     fragmentShader: string,
     uniforms?: any,
     fragmentRef?: ForwardedRef<FragmentHandle>,
@@ -19,7 +19,7 @@ type FragmentView = {
     autoRender?: boolean,
 };
 
-export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, useFrameFn, title, description, autoRender = false }: FragmentView) {
+export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, useFrameFn, title, description, autoRender = false }: FragmentViewProps) {
 
     const { width } = useViewportSize();
     const drawerTargetRef = useRef<HTMLDivElement>(null);
@@ -35,7 +35,7 @@ export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, 
             {description && <Text>{description}</Text>}
 
             <Flex ref={drawerTargetRef}
-                direction={isMobile ? 'column' : 'row'}
+                direction={isMobile ? "column" : "row"}
                 justify="center"
                 align="center"
                 style={{ height: "100%" }}>
@@ -65,7 +65,7 @@ export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, 
                         }
                         position={isMobile ? "bottom" : "right"}>
                         <Flex
-                            direction={isDesktop ? 'column' : 'row'}
+                            direction={isDesktop ? "column" : "row"}
                             justify="center"
                             align="flex-end"
                             wrap="wrap"
@@ -79,7 +79,7 @@ export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, 
             { !isDrawerOpened && children &&
                 <Affix position={{ bottom: 20, right: 20 }}>
                     <ActionIcon onClick={openDrawer} variant="filled" size="xl" radius="xl" aria-label="Settings">
-                        <IconAdjustments style={{ width: '70%', height: '70%' }} stroke={1.5} />
+                        <IconAdjustments style={{ width: "70%", height: "70%" }} stroke={1.5} />
                     </ActionIcon>
                 </Affix>
             }
