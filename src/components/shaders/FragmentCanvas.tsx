@@ -18,7 +18,7 @@ function FragmentCanvas({children}: FragmentCanvasProps) {
         parentParentRef.current = canvasRef.current.parentElement;
       }, [])
     return (
-        <Canvas ref={canvasRef} camera={{ position: [0.0, 0.0, 1.0] }}>
+        <Canvas ref={canvasRef} frameloop="demand" camera={{ position: [0.0, 0.0, 1.0] }}>
             {children}
             {settings.displayFps &&
                 (<StatsGl parent={parentParentRef} className={styles.stats}/>)

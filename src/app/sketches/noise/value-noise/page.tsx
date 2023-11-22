@@ -1,6 +1,6 @@
 'use client'
 
-import { RefObject, useCallback, useState } from "react";
+import { RefObject, useCallback, useRef, useState } from "react";
 import { ShaderMaterial } from "three";
 import { NumberInput } from '@mantine/core';
 import fragmentShader from './fragment.glsl'
@@ -36,6 +36,7 @@ export default function Page() {
     const [shiftX, setShiftX] = useState<number | string>(UNIFORMS.u_shift_x.value);
     const [shiftY, setShiftY] = useState<number | string>(UNIFORMS.u_shift_y.value);
 
+    const fragmentRef = useRef();
     const materialRef = useCallback((material: ShaderMaterial) => {
         if (material !== null) {
             material.uniforms.u_freq_count.value = freqCount;
@@ -44,6 +45,7 @@ export default function Page() {
             material.uniforms.u_gain.value = gain;
             material.uniforms.u_shift_x.value = shiftX;
             material.uniforms.u_shift_y.value = shiftY;
+            fragmentRef.current?.render();
         }
     }, [freqCount, freqBase, lacunarity, gain, shiftX, shiftY]) as unknown as RefObject<ShaderMaterial>;
 
@@ -52,7 +54,8 @@ export default function Page() {
             title="Value Noise"
             fragmentShader={fragmentShader}
             uniforms={UNIFORMS}
-            materialRef={materialRef}>
+            materialRef={materialRef}
+            fragmentRef={fragmentRef}>
 
             <NumberInput label="Number of frequences" onChange={setFreqCount} value={freqCount} min={1} max={10} allowDecimal={false} />
             <NumberInput label="Base frequence" onChange={setFreqBase} value={freqBase} min={0.0} decimalScale={2} />

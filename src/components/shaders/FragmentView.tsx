@@ -19,7 +19,7 @@ type FragmentView = {
     description?: string,
 };
 
-export function FragmentView({ fragmentShader, uniforms, children, materialRef, useFrameFn, title, description }: FragmentView) {
+export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, materialRef, useFrameFn, title, description }: FragmentView) {
 
     const { width } = useViewportSize();
     const drawerTargetRef = useRef<HTMLDivElement>(null);
@@ -42,6 +42,7 @@ export function FragmentView({ fragmentShader, uniforms, children, materialRef, 
 
                 <FragmentCanvas>
                     <Fragment
+                        ref={fragmentRef}
                         uniforms={uniforms}
                         fragmentShader={fragmentShader}
                         useFrameFn={useFrameFn}
