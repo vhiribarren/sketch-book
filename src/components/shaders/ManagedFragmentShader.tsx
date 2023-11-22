@@ -1,6 +1,5 @@
 'use client'
 
-import { ShaderMaterial } from 'three';
 import { useRef } from "react";
 import { FragmentView } from "./FragmentView";
 import { RenderCallback } from '@react-three/fiber';
