@@ -1,6 +1,6 @@
 import { ActionIcon, Affix, Drawer, Flex, Stack, Text, Title } from "@mantine/core";
 import FragmentCanvas from "./FragmentCanvas";
-import React, { RefObject, useRef } from "react";
+import React, { ForwardedRef, useRef } from "react";
 import Fragment, { FragmentHandle } from "./Fragment";
 import { RenderCallback } from "@react-three/fiber";
 import { useDisclosure, useViewportSize } from "@mantine/hooks";
@@ -11,7 +11,7 @@ import styles from "./FragmentView.module.css"
 type FragmentView = {
     fragmentShader: string,
     uniforms?: any,
-    fragmentRef?: (handle: FragmentHandle) => void,
+    fragmentRef?: ForwardedRef<FragmentHandle>,
     children?: React.ReactNode,
     useFrameFn?: RenderCallback,
     title?: string,
@@ -45,7 +45,7 @@ export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, 
                         uniforms={uniforms}
                         fragmentShader={fragmentShader}
                         useFrameFn={useFrameFn}
-                        fragmentRef={fragmentRef}
+                        ref={fragmentRef}
                         />
                 </FragmentCanvas>
                 {children &&

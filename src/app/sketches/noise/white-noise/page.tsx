@@ -15,7 +15,7 @@ const UNIFORMS = {
 export default function Page() {
 
     const [frequence, setFrequence] = useState<number | string>(UNIFORMS.u_frequence.value);
-    const fragmentRef = useCallback((fragmentHandler?: FragmentHandle) => {
+    const fragmentRef = useCallback((fragmentHandler: FragmentHandle | null) => {
         if (fragmentHandler?.uniforms) {
             fragmentHandler.uniforms.u_frequence.value = frequence;
             fragmentHandler.render();

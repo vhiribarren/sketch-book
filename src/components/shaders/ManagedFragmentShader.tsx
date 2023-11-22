@@ -22,7 +22,7 @@ export default function ManagedFragmentShader({ fragmentShader, withTime }: Mana
   const fragmentRef = useRef<FragmentHandle>(null!);
   const useFrameFn: RenderCallback = (state) => {
     const { clock } = state;
-    if (fragmentRef.current) {
+    if (fragmentRef.current.uniforms) {
       fragmentRef.current.uniforms.u_time.value = clock.getElapsedTime();
     }
   }

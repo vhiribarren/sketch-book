@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useState } from "react";
+import { RefCallback, useCallback, useState } from "react";
 import { NumberInput } from '@mantine/core';
 import fragmentShader from './fragment.glsl'
 import { FragmentView } from "@/components/shaders/FragmentView";
@@ -36,7 +36,7 @@ export default function Page() {
     const [shiftX, setShiftX] = useState<number | string>(UNIFORMS.u_shift_x.value);
     const [shiftY, setShiftY] = useState<number | string>(UNIFORMS.u_shift_y.value);
 
-    const fragmentRef = useCallback((fragmentHandler?: FragmentHandle) => {
+    const fragmentRef = useCallback((fragmentHandler: FragmentHandle | null) => {
         if (fragmentHandler?.uniforms) {
             fragmentHandler.uniforms.u_freq_count.value = freqCount;
             fragmentHandler.uniforms.u_freq_base.value = freqBase;
