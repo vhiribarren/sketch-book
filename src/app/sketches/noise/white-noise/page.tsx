@@ -1,7 +1,6 @@
 'use client'
 
-import { RefObject, useCallback, useRef, useState } from "react";
-import { ShaderMaterial } from "three";
+import { useCallback, useState } from "react";
 import { Group, NumberInput, Slider, Text } from '@mantine/core';
 import fragmentShader from './fragment.glsl'
 import { FragmentView } from "@/components/shaders/FragmentView";
@@ -16,13 +15,12 @@ const UNIFORMS = {
 export default function Page() {
 
     const [frequence, setFrequence] = useState<number | string>(UNIFORMS.u_frequence.value);
-    const fragmentRef = useRef<FragmentHandle>(null);
-    const materialRef = useCallback((material: ShaderMaterial) => {
-        if (material !== null) {
-            material.uniforms.u_frequence.value = frequence;
-            fragmentRef.current?.render();
+    const fragmentRef = useCallback((fragmentHandler?: FragmentHandle) => {
+        if (fragmentHandler?.uniforms) {
+            fragmentHandler.uniforms.u_frequence.value = frequence;
+            fragmentHandler.render();
         }
-    }, [frequence]) as unknown as RefObject<ShaderMaterial>;
+    }, [frequence]);
 
     return (
         <FragmentView
@@ -30,8 +28,7 @@ export default function Page() {
             description="Simple raw white noise without any processing. Frequency can be modified."
             fragmentShader={fragmentShader}
             uniforms={UNIFORMS}
-            fragmentRef={fragmentRef}
-            materialRef={materialRef}>
+            fragmentRef={fragmentRef}>
             <Group wrap="nowrap">
                 <Slider onChange={setFrequence} value={typeof frequence === 'string' ? 0 : frequence} style={{ minWidth: 200 }} min={2} max={500} />
                 <NumberInput onChange={setFrequence} value={frequence} min={2} max={500} />

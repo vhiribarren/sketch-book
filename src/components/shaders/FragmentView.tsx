@@ -2,7 +2,6 @@ import { ActionIcon, Affix, Drawer, Flex, Stack, Text, Title } from "@mantine/co
 import FragmentCanvas from "./FragmentCanvas";
 import React, { RefObject, useRef } from "react";
 import Fragment, { FragmentHandle } from "./Fragment";
-import { ShaderMaterial } from "three";
 import { RenderCallback } from "@react-three/fiber";
 import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import { IconAdjustments } from "@tabler/icons-react";
@@ -12,8 +11,7 @@ import styles from "./FragmentView.module.css"
 type FragmentView = {
     fragmentShader: string,
     uniforms?: any,
-    materialRef?: RefObject<ShaderMaterial>,
-    fragmentRef?: RefObject<FragmentHandle>,
+    fragmentRef?: (handle: FragmentHandle) => void,
     children?: React.ReactNode,
     useFrameFn?: RenderCallback,
     title?: string,
@@ -21,7 +19,7 @@ type FragmentView = {
     autoRender?: boolean,
 };
 
-export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, materialRef, useFrameFn, title, description, autoRender = false }: FragmentView) {
+export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, useFrameFn, title, description, autoRender = false }: FragmentView) {
 
     const { width } = useViewportSize();
     const drawerTargetRef = useRef<HTMLDivElement>(null);
@@ -47,7 +45,6 @@ export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, 
                         uniforms={uniforms}
                         fragmentShader={fragmentShader}
                         useFrameFn={useFrameFn}
-                        materialRef={materialRef}
                         fragmentRef={fragmentRef}
                         />
                 </FragmentCanvas>
@@ -79,7 +76,7 @@ export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, 
                 }
             </Flex>
 
-            { !isDrawerOpened &&
+            { !isDrawerOpened && children &&
                 <Affix position={{ bottom: 20, right: 20 }}>
                     <ActionIcon onClick={openDrawer} variant="filled" size="xl" radius="xl" aria-label="Settings">
                         <IconAdjustments style={{ width: '70%', height: '70%' }} stroke={1.5} />

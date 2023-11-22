@@ -1,7 +1,6 @@
 'use client'
 
-import { RefObject, useCallback, useRef, useState } from "react";
-import { ShaderMaterial } from "three";
+import { useCallback, useState } from "react";
 import { NumberInput } from '@mantine/core';
 import fragmentShader from './fragment.glsl'
 import { FragmentView } from "@/components/shaders/FragmentView";
@@ -37,25 +36,23 @@ export default function Page() {
     const [shiftX, setShiftX] = useState<number | string>(UNIFORMS.u_shift_x.value);
     const [shiftY, setShiftY] = useState<number | string>(UNIFORMS.u_shift_y.value);
 
-    const fragmentRef = useRef<FragmentHandle>(null);
-    const materialRef = useCallback((material: ShaderMaterial) => {
-        if (material !== null) {
-            material.uniforms.u_freq_count.value = freqCount;
-            material.uniforms.u_freq_base.value = freqBase;
-            material.uniforms.u_lacunarity.value = lacunarity;
-            material.uniforms.u_gain.value = gain;
-            material.uniforms.u_shift_x.value = shiftX;
-            material.uniforms.u_shift_y.value = shiftY;
-            fragmentRef.current?.render();
+    const fragmentRef = useCallback((fragmentHandler?: FragmentHandle) => {
+        if (fragmentHandler?.uniforms) {
+            fragmentHandler.uniforms.u_freq_count.value = freqCount;
+            fragmentHandler.uniforms.u_freq_base.value = freqBase;
+            fragmentHandler.uniforms.u_lacunarity.value = lacunarity;
+            fragmentHandler.uniforms.u_gain.value = gain;
+            fragmentHandler.uniforms.u_shift_x.value = shiftX;
+            fragmentHandler.uniforms.u_shift_y.value = shiftY;
+            fragmentHandler.render();
         }
-    }, [freqCount, freqBase, lacunarity, gain, shiftX, shiftY]) as unknown as RefObject<ShaderMaterial>;
+    }, [freqCount, freqBase, lacunarity, gain, shiftX, shiftY]);
 
     return (
         <FragmentView
             title="Value Noise"
             fragmentShader={fragmentShader}
             uniforms={UNIFORMS}
-            materialRef={materialRef}
             fragmentRef={fragmentRef}>
 
             <NumberInput label="Number of frequences" onChange={setFreqCount} value={freqCount} min={1} max={10} allowDecimal={false} />

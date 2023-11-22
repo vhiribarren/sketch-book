@@ -1,17 +1,18 @@
 import { RenderCallback, useFrame, useThree } from "@react-three/fiber";
-import { RefObject, forwardRef, useEffect, useImperativeHandle, useMemo } from "react";
-import { ShaderMaterial } from "three";
+import { RefObject, forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from "react";
+import { IUniform, ShaderMaterial } from "three";
 
 type FragmentProps = {
     fragmentShader: string,
     uniforms?: any,
     useFrameFn?: RenderCallback,
     materialRef?: RefObject<ShaderMaterial>,
-    fragmentRef?: RefObject<FragmentHandle>,
+    fragmentRef?: (handle: FragmentHandle) => void,
 };
 
 export type FragmentHandle = {
-    render: () => void;
+    render: () => void,
+    get uniforms(): { [uniform: string]: IUniform } | undefined;
 };
 
 const VERTEX_SHADER = `
@@ -25,7 +26,8 @@ const VERTEX_SHADER = `
     }
 `;
 
-function Fragment({ fragmentShader, uniforms, useFrameFn, materialRef, fragmentRef }: FragmentProps) {
+function Fragment({ fragmentShader, uniforms, useFrameFn, fragmentRef }: FragmentProps) {
+    const materialRef = useRef<ShaderMaterial>(null);
     const { viewport, invalidate } = useThree()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const memoizedUniforms = useMemo(() => uniforms, []);
@@ -42,6 +44,9 @@ function Fragment({ fragmentShader, uniforms, useFrameFn, materialRef, fragmentR
         return {
             render() {
                 invalidate();
+            },
+            get uniforms() {
+                return materialRef.current?.uniforms;
             }
         };
     });
