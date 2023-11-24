@@ -46,10 +46,11 @@ export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, 
                         fragmentShader={fragmentShader}
                         useFrameFn={useFrameFn}
                         ref={fragmentRef}
-                        />
+                    />
                 </FragmentCanvas>
                 {children &&
                     <Drawer
+                    size={300}
                         classNames={{ inner: styles.inner, content: styles.content }}
                         title="Parameters"
                         opened={isDrawerOpened}
@@ -60,23 +61,16 @@ export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, 
                         overlayProps={{ backgroundOpacity: 0.2 }}
                         portalProps={
                             isMobile
-                            ? undefined
-                            : { target: drawerTargetRef.current as HTMLElement }
+                                ? undefined
+                                : { target: drawerTargetRef.current as HTMLElement }
                         }
                         position={isMobile ? "bottom" : "right"}>
-                        <Flex
-                            direction={isDesktop ? "column" : "row"}
-                            justify="center"
-                            align="flex-end"
-                            wrap="wrap"
-                            gap={10}>
-                            {children}
-                        </Flex>
+                        {children}
                     </Drawer>
                 }
             </Flex>
 
-            { !isDrawerOpened && children &&
+            {!isDrawerOpened && children &&
                 <Affix position={{ bottom: 20, right: 20 }}>
                     <ActionIcon onClick={openDrawer} variant="filled" size="xl" radius="xl" aria-label="Settings">
                         <IconAdjustments style={{ width: "70%", height: "70%" }} stroke={1.5} />

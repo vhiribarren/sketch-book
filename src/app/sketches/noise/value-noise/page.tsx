@@ -5,6 +5,7 @@ import { NumberInput } from "@mantine/core";
 import fragmentShader from "./fragment.glsl";
 import { FragmentView } from "@/components/shaders/FragmentView";
 import { FragmentHandle } from "@/components/shaders/Fragment";
+import styles from "./page.module.css";
 
 const UNIFORMS = {
     u_freq_count: {
@@ -55,12 +56,14 @@ export default function Page() {
             uniforms={UNIFORMS}
             fragmentRef={fragmentRef}>
 
-            <NumberInput label="Number of frequences" onChange={setFreqCount} value={freqCount} min={1} max={10} allowDecimal={false} />
-            <NumberInput label="Base frequence" onChange={setFreqBase} value={freqBase} min={0.0} decimalScale={2} />
-            <NumberInput label="Lacunarity" onChange={setLacunarity} value={lacunarity} min={0.0} step={0.1} decimalScale={2} />
-            <NumberInput label="Gain" onChange={setGain} value={gain} min={0.0} step={0.1} decimalScale={2} />
-            <NumberInput label="Shift X" onChange={setShiftX} value={shiftX} step={0.1} decimalScale={2} />
-            <NumberInput label="Shift Y" onChange={setShiftY} value={shiftY} step={0.1} decimalScale={2} />
+            <div className={styles.shaderControlWrapper}>
+                <NumberInput className={styles.shaderControl} label="Number of frequences" onChange={setFreqCount} value={freqCount} min={1} max={10} allowDecimal={false} />
+                <NumberInput className={styles.shaderControl} label="Base frequence" onChange={setFreqBase} value={freqBase} min={0.0} decimalScale={2} />
+                <NumberInput className={styles.shaderControl} label="Lacunarity" onChange={setLacunarity} value={lacunarity} min={0.0} step={0.1} decimalScale={2} />
+                <NumberInput className={styles.shaderControl} label="Gain" onChange={setGain} value={gain} min={0.0} step={0.1} decimalScale={2} />
+                <NumberInput className={styles.shaderControl} label="Shift X" onChange={setShiftX} value={shiftX} step={0.1} decimalScale={2} />
+                <NumberInput className={styles.shaderControl} label="Shift Y" onChange={setShiftY} value={shiftY} step={0.1} decimalScale={2} />
+            </div>
 
         </FragmentView>
     );

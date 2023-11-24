@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { Group, NumberInput, Slider, Text } from "@mantine/core";
+import { Group, NumberInput, Slider, Stack, Text } from "@mantine/core";
 import fragmentShader from "./fragment.glsl";
 import { FragmentView } from "@/components/shaders/FragmentView";
 import { FragmentHandle } from "@/components/shaders/Fragment";
@@ -29,11 +29,15 @@ export default function Page() {
             fragmentShader={fragmentShader}
             uniforms={UNIFORMS}
             fragmentRef={fragmentRef}>
-            <Group wrap="nowrap">
-                <Slider onChange={setFrequence} value={typeof frequence === "string" ? 0 : frequence} style={{ minWidth: 200 }} min={2} max={500} />
+
+            <Group justify="center" align="center">
+                <Stack>
+                <Text size="sm">Height frequency</Text>
+                    <Slider onChange={setFrequence} value={typeof frequence === "string" ? 0 : frequence} style={{ minWidth: 200 }} min={2} max={500} />
+                </Stack>
                 <NumberInput onChange={setFrequence} value={frequence} min={2} max={500} />
             </Group>
-            <Text>Height frequency</Text>
+
         </FragmentView>
     );
 }
