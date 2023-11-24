@@ -2,15 +2,17 @@
 
 import "@mantine/core/styles.css";
 
-import { MantineProvider, Text, AppShell, Burger, Switch, Group, ScrollArea, Space } from "@mantine/core";
+import { MantineProvider, Text, AppShell, Burger, Switch, Group, ScrollArea, Space, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import NavbarMenu from "../components/NavbarMenu/NavbarMenu";
 import { Inter } from "next/font/google";
 import { Settings } from "./Context";
+import { ReactNode, useState } from "react";
+import Link from "next/link";
 
 import "./globals.css";
+import styles from "./layout.module.css";
 import menuContent from "../config/menu.json";
-import { ReactNode, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,7 +45,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 <Group h="100%" px="md">
                   <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
                   <Burger onClick={toggleDesktop} visibleFrom="sm" size="sm" />
-                  <Text size="xl" fw={700}>Sketch Book</Text>
+                  <Link href="/" className={styles.titleLink}><Title order={2} >Sketch Book</Title></Link>
                 </Group>
               </AppShell.Header>
               <AppShell.Navbar p="md">
