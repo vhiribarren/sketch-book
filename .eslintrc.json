@@ -12,10 +12,9 @@
     "next/core-web-vitals"
   ],
   "plugins": [
-    "unused-imports", "@stylistic/js"
+    "@stylistic/js"
   ],
   "rules": {
-    "unused-imports/no-unused-imports": "warn",
     "@stylistic/js/semi": [
       "warn",
       "always"
