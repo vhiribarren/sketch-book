@@ -25,15 +25,12 @@ const VERTEX_SHADER = `
 `;
 
 const Fragment = forwardRef(function Fragment(props: FragmentProps, ref: ForwardedRef<FragmentHandle>) {
-    const { fragmentShader, uniforms, useFrameFn } = props;
+    const { fragmentShader, uniforms, useFrameFn = ()=>{} } = props;
     const materialRef = useRef<ShaderMaterial>(null);
     const { viewport, invalidate } = useThree();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const memoizedUniforms = useMemo(() => uniforms, []);
-    if (useFrameFn) {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        useFrame(useFrameFn);
-    }
+    const memoizedUniforms = useMemo(() => uniforms, [uniforms]);
+
+    useFrame(useFrameFn);
     useEffect(() => {
         if (materialRef && materialRef.current) {
             materialRef.current.needsUpdate = true;
@@ -49,6 +46,7 @@ const Fragment = forwardRef(function Fragment(props: FragmentProps, ref: Forward
             }
         };
     });
+    
     return (
         <mesh position={[0, 0, 0]} scale={[viewport.width, viewport.height, 1]}>
             <planeGeometry args={[1, 1]} />
