@@ -51,7 +51,7 @@ export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, 
                 {children &&
                     <Drawer
                     size={300}
-                        classNames={{ inner: styles.inner, content: styles.content }}
+                        classNames={{ root: styles.drawerRoot, inner: styles.drawerInner, content: styles.drawerContent }}
                         title="Parameters"
                         opened={isDrawerOpened}
                         onClose={closeDrawer}

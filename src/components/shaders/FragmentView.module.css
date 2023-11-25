@@ -1,14 +1,22 @@
-.inner {
+.drawerRoot {
+    height: 100%;;
+}
+
+div:has(> .drawerRoot) {
+    height: 100%;
+}
+
+.drawerInner {
     position: relative;
 }
-.content {
+.drawerContent {
     box-shadow: none;
     height: inherit;
     width: inherit;
 }
 
 @media screen and (max-width: 700px) {
-    .inner {
+    .drawerInner {
         position: fixed;
     }    
 }
