@@ -1,15 +1,25 @@
+# Sketch-book
+
+Various graphical tests in the browser, using shaders and JavaScript libraries.
+
 ## Getting Started
 
 First, run the development server:
 
 ```bash
+# After first checkout
+npm install
+
+# Develop with local server on http://localhost:3000
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Linter
+npm run lint
+
+# Export static site to ./out
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## License
+
+No license for now, so default copyright laws.
