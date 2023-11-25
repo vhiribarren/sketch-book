@@ -19,11 +19,15 @@ type FragmentViewProps = {
     autoRender?: boolean,
 };
 
+type Pixels = number;
+
+const DESKTOP_THRESHOLD: Pixels = 680;
+
 export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, useFrameFn, title, description, autoRender = false }: FragmentViewProps) {
 
     const { width } = useViewportSize();
     const drawerTargetRef = useRef<HTMLDivElement>(null);
-    const isMobile = width < 700;
+    const isMobile = (width as Pixels) < DESKTOP_THRESHOLD;
     const isDesktop = !isMobile;
     const [isDrawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(isDesktop);
 
@@ -50,7 +54,6 @@ export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, 
                 </FragmentCanvas>
                 {children &&
                     <Drawer
-                    size={300}
                         classNames={{ root: styles.drawerRoot, inner: styles.drawerInner, content: styles.drawerContent }}
                         title="Parameters"
                         opened={isDrawerOpened}
