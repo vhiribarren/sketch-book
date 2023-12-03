@@ -1,6 +1,5 @@
 "use client";
 
-import ManagedFragmentShader from "@/components/shaders/ManagedFragmentShader";
 import fragmentShader from "./fragment.glsl";
 import { useCallback, useState } from "react";
 import { FragmentHandle } from "@/components/shaders/Fragment";
