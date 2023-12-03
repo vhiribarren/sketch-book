@@ -7,6 +7,10 @@
         {
             "title": "Time Gradient",
             "slug": "/sketches/basic/time-gradient"
+        },
+        {
+            "title": "Radial HSL",
+            "slug": "/sketches/basic/radial-hsl"
         }
     ]
 }, {
