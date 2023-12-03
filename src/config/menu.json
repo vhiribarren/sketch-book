@@ -2,26 +2,26 @@
     "group": "Basic",
     "pages": [{
             "title": "Static Gradient",
-            "slug": "/sketches/basic/static-gradient"
+            "slug": "/basic/static-gradient"
         },
         {
             "title": "Time Gradient",
-            "slug": "/sketches/basic/time-gradient"
+            "slug": "/basic/time-gradient"
         },
         {
             "title": "Radial HSL",
-            "slug": "/sketches/basic/radial-hsl"
+            "slug": "/basic/radial-hsl"
         }
     ]
 }, {
     "group": "Noise",
     "pages": [{
             "title": "White Noise",
-            "slug": "/sketches/noise/white-noise"
+            "slug": "/noise/white-noise"
         },
         {
             "title": "Value Noise",
-            "slug": "/sketches/noise/value-noise"
+            "slug": "/noise/value-noise"
         }
     ]
 }]
