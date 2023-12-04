@@ -1,16 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    output: 'export',
+    output: "export",
     webpack: (config) => {
         config.module.rules.push({
-          test: /\.(frag|vert|glsl)$/,
-          type: 'asset/source'
-        })
-        return config
+          test: /\.(glsl|vs|fs|vert|frag)$/,
+          exclude: /node_modules/,
+          use: [
+            "glslify-loader"
+          ],
+          type: "asset/source"
+        });
+        return config;
     },
     experimental: {
-      optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
+      optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
     },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
