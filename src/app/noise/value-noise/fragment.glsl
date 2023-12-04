@@ -1,3 +1,5 @@
+#pragma glslify: random = require(../../../glsl-modules/random)
+
 uniform uint u_freq_count;
 uniform float u_freq_base;
 uniform float u_lacunarity;
@@ -6,10 +8,6 @@ uniform float u_shift_x;
 uniform float u_shift_y;
 
 varying vec2 v_uv;
-
-float random(vec2 uv) {
-  return fract(sin(dot(uv.xy, vec2(12.9898, 78.233))) * 43758.5453123);
-}
 
 float average_noise_smoothstep(vec2 scaled_uv) {
     vec2 percent = smoothstep(vec2(0.), vec2(1.), fract(scaled_uv));
