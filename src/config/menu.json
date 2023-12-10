@@ -18,6 +18,10 @@
     "pages": [{
             "title": "Ripple effect",
             "slug": "/deformation/ripple"
+        },
+        {
+            "title": "Circle grid",
+            "slug": "/deformation/circle-grid"
         }
     ]
 }, {
