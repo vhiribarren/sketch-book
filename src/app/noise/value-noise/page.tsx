@@ -1,10 +1,9 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useEffect, useState } from "react";
 import { NumberInput } from "@mantine/core";
 import fragmentShader from "./fragment.glsl";
-import { FragmentView } from "@/components/shaders/FragmentView";
-import { FragmentHandle } from "@/components/shaders/Fragment";
+import { FragmentLogic, FragmentView } from "@/components/shaders/FragmentView";
 import styles from "./page.module.css";
 
 const UNIFORMS = {
@@ -28,7 +27,7 @@ const UNIFORMS = {
     },
 };
 
-export default function Page() {
+function ValueNoiseControl({fragmentRef, controlUiTunnel}: FragmentLogic) {
 
     const [freqCount, setFreqCount] = useState<number | string>(UNIFORMS.u_freq_count.value);
     const [freqBase, setFreqBase] = useState<number | string>(UNIFORMS.u_freq_base.value);
@@ -36,26 +35,22 @@ export default function Page() {
     const [gain, setGain] = useState<number | string>(UNIFORMS.u_gain.value);
     const [shiftX, setShiftX] = useState<number | string>(UNIFORMS.u_shift_x.value);
     const [shiftY, setShiftY] = useState<number | string>(UNIFORMS.u_shift_y.value);
+    const ControlUiTunnel = controlUiTunnel;
 
-    const fragmentRef = useCallback((fragmentHandler: FragmentHandle | null) => {
-        if (fragmentHandler?.uniforms) {
-            fragmentHandler.uniforms.u_freq_count.value = freqCount;
-            fragmentHandler.uniforms.u_freq_base.value = freqBase;
-            fragmentHandler.uniforms.u_lacunarity.value = lacunarity;
-            fragmentHandler.uniforms.u_gain.value = gain;
-            fragmentHandler.uniforms.u_shift_x.value = shiftX;
-            fragmentHandler.uniforms.u_shift_y.value = shiftY;
-            fragmentHandler.render();
+    useEffect(() => {
+        if (fragmentRef?.current?.uniforms) {
+            fragmentRef.current.uniforms.u_freq_count.value = freqCount;
+            fragmentRef.current.uniforms.u_freq_base.value = freqBase;
+            fragmentRef.current.uniforms.u_lacunarity.value = lacunarity;
+            fragmentRef.current.uniforms.u_gain.value = gain;
+            fragmentRef.current.uniforms.u_shift_x.value = shiftX;
+            fragmentRef.current.uniforms.u_shift_y.value = shiftY;
+            fragmentRef.current.render();
         }
-    }, [freqCount, freqBase, lacunarity, gain, shiftX, shiftY]);
+    }, [freqCount, freqBase, lacunarity, gain, shiftX, shiftY, fragmentRef]);
 
     return (
-        <FragmentView
-            title="Value Noise"
-            fragmentShader={fragmentShader}
-            uniforms={UNIFORMS}
-            fragmentRef={fragmentRef}>
-
+        <ControlUiTunnel>
             <div className={styles.shaderControlWrapper}>
                 <NumberInput className={styles.shaderControl} label="Number of frequences" onChange={setFreqCount} value={freqCount} min={1} max={10} allowDecimal={false} />
                 <NumberInput className={styles.shaderControl} label="Base frequence" onChange={setFreqBase} value={freqBase} min={0.0} decimalScale={2} />
@@ -64,7 +59,18 @@ export default function Page() {
                 <NumberInput className={styles.shaderControl} label="Shift X" onChange={setShiftX} value={shiftX} step={0.1} decimalScale={2} />
                 <NumberInput className={styles.shaderControl} label="Shift Y" onChange={setShiftY} value={shiftY} step={0.1} decimalScale={2} />
             </div>
+        </ControlUiTunnel>
+    );
+}
 
-        </FragmentView>
+
+export default function Page() {
+    return (
+        <FragmentView
+            title="Value Noise"
+            fragmentShader={fragmentShader}
+            uniforms={UNIFORMS}
+            withUi={true}
+            control={ValueNoiseControl} />
     );
 }

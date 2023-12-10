@@ -1,35 +1,52 @@
+"use client";
+
 import { ActionIcon, Affix, Drawer, Flex, Stack, Text, Title } from "@mantine/core";
 import FragmentCanvas from "./FragmentCanvas";
-import React, { ForwardedRef, useRef } from "react";
+import React, { RefObject, useRef } from "react";
 import Fragment, { FragmentHandle } from "./Fragment";
-import { RenderCallback } from "@react-three/fiber";
 import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import { IconAdjustments } from "@tabler/icons-react";
 import styles from "./FragmentView.module.css";
+import tunnel from "tunnel-rat";
 
+
+type ChildrenProps = {
+    children: React.ReactNode
+};
+
+export type FragmentLogic = {
+    fragmentRef: RefObject<FragmentHandle>,
+    controlUiTunnel: React.FC<ChildrenProps>,
+};
 
 type FragmentViewProps = {
     fragmentShader: string,
     uniforms?: any,
-    fragmentRef?: ForwardedRef<FragmentHandle>,
-    children?: React.ReactNode,
-    useFrameFn?: RenderCallback,
     title?: string,
     description?: string,
     autoRender?: boolean,
+    control?: React.FC<FragmentLogic>,
+    withUi?: boolean,
 };
 
 type Pixels = number;
 
 const DESKTOP_THRESHOLD: Pixels = 680;
 
-export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, useFrameFn, title, description, autoRender = false }: FragmentViewProps) {
 
+export function FragmentView({
+    control, fragmentShader, uniforms, title, description,
+    withUi = false, autoRender = false
+} : FragmentViewProps) {
+
+    const fragmentRef = useRef(null);
     const { width } = useViewportSize();
     const drawerTargetRef = useRef<HTMLDivElement>(null);
     const isMobile = (width as Pixels) < DESKTOP_THRESHOLD;
     const isDesktop = !isMobile;
     const [isDrawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(isDesktop);
+    const Control = control;
+    const ui = tunnel();
 
     return (
 
@@ -48,11 +65,14 @@ export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, 
                     <Fragment
                         uniforms={uniforms}
                         fragmentShader={fragmentShader}
-                        useFrameFn={useFrameFn}
                         ref={fragmentRef}
                     />
+                    {Control &&
+                         <Control controlUiTunnel={ui.In} fragmentRef={fragmentRef} />
+                    }
                 </FragmentCanvas>
-                {children &&
+
+                {withUi &&
                     <Drawer
                         classNames={{ root: styles.drawerRoot, inner: styles.drawerInner, content: styles.drawerContent }}
                         title="Parameters"
@@ -68,12 +88,13 @@ export function FragmentView({ fragmentRef, fragmentShader, uniforms, children, 
                                 : { target: drawerTargetRef.current as HTMLElement }
                         }
                         position={isMobile ? "bottom" : "right"}>
-                        {children}
+                             <ui.Out />
                     </Drawer>
                 }
+                
             </Flex>
 
-            {!isDrawerOpened && children &&
+            {!isDrawerOpened && withUi &&
                 <Affix position={{ bottom: 20, right: 20 }}>
                     <ActionIcon onClick={openDrawer} variant="filled" size="xl" radius="xl" aria-label="Settings">
                         <IconAdjustments style={{ width: "70%", height: "70%" }} stroke={1.5} />

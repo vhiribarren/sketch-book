@@ -1,10 +1,9 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useEffect, useState } from "react";
 import { Group, NumberInput, Slider, Stack, Text } from "@mantine/core";
 import fragmentShader from "./fragment.glsl";
-import { FragmentView } from "@/components/shaders/FragmentView";
-import { FragmentHandle } from "@/components/shaders/Fragment";
+import { FragmentLogic, FragmentView } from "@/components/shaders/FragmentView";
 
 const UNIFORMS = {
     u_frequence: {
@@ -12,32 +11,38 @@ const UNIFORMS = {
     },
 };
 
-export default function Page() {
+function WhiteNoiseControl({ fragmentRef, controlUiTunnel }: FragmentLogic) {
 
     const [frequence, setFrequence] = useState<number | string>(UNIFORMS.u_frequence.value);
-    const fragmentRef = useCallback((fragmentHandler: FragmentHandle | null) => {
-        if (fragmentHandler?.uniforms) {
-            fragmentHandler.uniforms.u_frequence.value = frequence;
-            fragmentHandler.render();
+    useEffect(() => {
+        if (fragmentRef.current?.uniforms) {
+            fragmentRef.current.uniforms.u_frequence.value = frequence;
+            fragmentRef.current.render();
         }
-    }, [frequence]);
+    }, [frequence, fragmentRef]);
+    const ControlUiTunnel = controlUiTunnel;
 
+    return (
+        <ControlUiTunnel>
+            <Group justify="center" align="center">
+                <Stack>
+                    <Text size="sm">Height frequency</Text>
+                    <Slider onChange={setFrequence} value={typeof frequence === "string" ? 0 : frequence} style={{ minWidth: 200 }} min={2} max={500} />
+                </Stack>
+                <NumberInput onChange={setFrequence} value={frequence} min={2} max={500} />
+            </Group>
+        </ControlUiTunnel>
+    );
+}
+
+export default function Page() {
     return (
         <FragmentView
             title="White Noise"
             description="Simple raw white noise without any processing. Frequency can be modified."
             fragmentShader={fragmentShader}
             uniforms={UNIFORMS}
-            fragmentRef={fragmentRef}>
-
-            <Group justify="center" align="center">
-                <Stack>
-                <Text size="sm">Height frequency</Text>
-                    <Slider onChange={setFrequence} value={typeof frequence === "string" ? 0 : frequence} style={{ minWidth: 200 }} min={2} max={500} />
-                </Stack>
-                <NumberInput onChange={setFrequence} value={frequence} min={2} max={500} />
-            </Group>
-
-        </FragmentView>
+            withUi={true}
+            control={WhiteNoiseControl} />
     );
 }

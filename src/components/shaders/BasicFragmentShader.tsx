@@ -2,10 +2,15 @@ import { FragmentView } from "./FragmentView";
 
 type BasicFragmentShaderProps = {
     fragmentShader: string,
+    title?: string,
+    description?: string,
 }
 
-export default function BasicFragmentShader({ fragmentShader }: BasicFragmentShaderProps) {
+export default function BasicFragmentShader({fragmentShader, title, description}: BasicFragmentShaderProps) {
     return (
-        <FragmentView fragmentShader={fragmentShader} />
+      <FragmentView
+        title={title}
+        description={description}
+        fragmentShader={fragmentShader} />
     );
-}
+  }

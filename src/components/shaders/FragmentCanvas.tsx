@@ -11,7 +11,7 @@ type FragmentCanvasProps = {
     autoRender?: boolean,
 };
 
-function FragmentCanvas({autoRender = false, children}: FragmentCanvasProps) {
+export default function FragmentCanvas({autoRender = false, children}: FragmentCanvasProps) {
     const settings = useContext(Settings);
     const canvasRef = useRef<HTMLCanvasElement>(null!);
     const parentParentRef = useRef<HTMLElement|null>(null);
@@ -27,5 +27,3 @@ function FragmentCanvas({autoRender = false, children}: FragmentCanvasProps) {
         </Canvas>
     );
 }
-
-export default FragmentCanvas;

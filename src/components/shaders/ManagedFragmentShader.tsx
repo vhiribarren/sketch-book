@@ -1,13 +1,13 @@
 "use client";
 
-import { useRef } from "react";
-import { FragmentView } from "./FragmentView";
-import { RenderCallback } from "@react-three/fiber";
-import { FragmentHandle } from "./Fragment";
+import { useFrame } from "@react-three/fiber";
+import { FragmentLogic, FragmentView } from "./FragmentView";
 
 type ManagedFragmentShaderProps = {
   fragmentShader: string,
   withTime: boolean,
+  title?: string,
+  description?: string,
 }
 
 const UNIFORMS = {
@@ -16,22 +16,24 @@ const UNIFORMS = {
   },
 };
 
-export default function ManagedFragmentShader({ fragmentShader, withTime }: ManagedFragmentShaderProps) {
-
-  const fragmentRef = useRef<FragmentHandle>(null!);
-  const useFrameFn: RenderCallback = (state) => {
+function ManagedFragmentShaderControl({fragmentRef}: FragmentLogic) {
+  useFrame((state) => {
     const { clock } = state;
-    if (fragmentRef.current.uniforms) {
+    if (fragmentRef.current?.uniforms) {
       fragmentRef.current.uniforms.u_time.value = clock.getElapsedTime();
     }
-  };
+  });
+  return null;
+}
 
+export default function ManagedFragmentShader({ fragmentShader, withTime, title, description }: ManagedFragmentShaderProps) {
   return (
     <FragmentView
+      title={title}
+      description={description}
       autoRender={withTime}
-      fragmentShader={fragmentShader}
       uniforms={UNIFORMS}
-      useFrameFn={useFrameFn}
-      fragmentRef={fragmentRef} />
+      fragmentShader={fragmentShader}
+      control={ManagedFragmentShaderControl} />
   );
 }

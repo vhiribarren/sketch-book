@@ -1,13 +1,11 @@
 "use client";
 
 import fragmentShader from "./fragment.glsl";
-import { useCallback, useState } from "react";
-import { FragmentHandle } from "@/components/shaders/Fragment";
-import { RenderCallback } from "@react-three/fiber";
-import { FragmentView } from "@/components/shaders/FragmentView";
+import { useEffect, useState } from "react";
+import { FragmentLogic, FragmentView } from "@/components/shaders/FragmentView";
 import { NumberInput } from "@mantine/core";
 import styles from "./page.module.css";
-
+import { useFrame } from "@react-three/fiber";
 
 const UNIFORMS = {
   u_frequence: {
@@ -27,52 +25,55 @@ const UNIFORMS = {
   },
 };
 
-
-export default function Page() {
+function RippleControl({fragmentRef, controlUiTunnel}: FragmentLogic) {
 
   const [frequence, setFrequence] = useState<number | string>(UNIFORMS.u_frequence.value);
   const [amplitude, setAmplitude] = useState<number | string>(UNIFORMS.u_amplitude.value);
   const [decrease, setDecrease] = useState<number | string>(UNIFORMS.u_decrease.value);
   const [speed, setSpeed] = useState<number | string>(UNIFORMS.u_speed.value);
-  const [time, setTime] = useState<number | string>(UNIFORMS.u_time.value);
+  const ControlUiTunnel = controlUiTunnel;
 
+  useEffect(() => {
+    if (fragmentRef.current?.uniforms) {
+      const uniforms = fragmentRef.current?.uniforms;
+      uniforms.u_frequence.value = frequence;
+      uniforms.u_amplitude.value = amplitude;
+      uniforms.u_decrease.value = decrease;
+      uniforms.u_speed.value = speed;
+      fragmentRef.current.render();
+    }
+  }, [frequence, amplitude, decrease, speed, fragmentRef]);
 
-  const fragmentRef = useCallback((fragmentHandler: FragmentHandle | null) => {
-      if (fragmentHandler?.uniforms) {
-          fragmentHandler.uniforms.u_frequence.value = frequence;
-          fragmentHandler.uniforms.u_amplitude.value = amplitude;
-          fragmentHandler.uniforms.u_decrease.value = decrease;
-          fragmentHandler.uniforms.u_time.value = time;
-          fragmentHandler.uniforms.u_speed.value = speed;
-          fragmentHandler.render();
-      }
-  }, [frequence, amplitude, decrease, speed, time]);
-
-  const useFrameFn: RenderCallback = (state) => {
+  useFrame((state) => {
       const { clock } = state;
-      setTime(clock.elapsedTime);
-    };
+      if (fragmentRef.current?.uniforms) {
+        fragmentRef.current.uniforms.u_time.value = clock.elapsedTime;
+      }
+    });
 
-    // FIXME: FREQUENT RE-RENDER DUE TO CLOCK
     // TODO: when click, trigger a pulse
 
+  return (
+    <ControlUiTunnel>
+      <div className={styles.shaderControlWrapper}>
+        <NumberInput className={styles.shaderControl} label="Frequence" onChange={setFrequence} value={frequence} min={0.0} max={100.0} />
+        <NumberInput className={styles.shaderControl} label="Amplitude" onChange={setAmplitude} value={amplitude} min={0.0} max={10.0} step={0.05} decimalScale={2} />
+        <NumberInput className={styles.shaderControl} label="Decrease" onChange={setDecrease} value={decrease} min={0.0} max={100.0} decimalScale={2} />
+        <NumberInput className={styles.shaderControl} label="Speed" onChange={setSpeed} value={speed} min={0.0} max={10.0} step={0.1} decimalScale={2} />
+      </div>
+    </ControlUiTunnel>
+    );
+}
 
+
+export default function Page() {
   return (
     <FragmentView
-        title="Ripple Effect"
-        autoRender={true}
-        fragmentShader={fragmentShader}
-        uniforms={UNIFORMS}
-        useFrameFn={useFrameFn}
-        fragmentRef={fragmentRef}>
-
-        <div className={styles.shaderControlWrapper}>
-            <NumberInput className={styles.shaderControl} label="Frequence" onChange={setFrequence} value={frequence} min={0.0} max={100.0} />
-            <NumberInput className={styles.shaderControl} label="Amplitude" onChange={setAmplitude} value={amplitude} min={0.0} max={10.0} step={0.05} decimalScale={2} />
-            <NumberInput className={styles.shaderControl} label="Decrease" onChange={setDecrease} value={decrease} min={0.0} max={100.0} decimalScale={2} />
-            <NumberInput className={styles.shaderControl} label="Speed" onChange={setSpeed} value={speed} min={0.0} max={10.0} step={0.1} decimalScale={2} />
-        </div>
-
-    </FragmentView>
+      title="Ripple Effect"
+      autoRender={true}
+      fragmentShader={fragmentShader}
+      uniforms={UNIFORMS}
+      withUi={true}
+      control={RippleControl} />
   );
 }

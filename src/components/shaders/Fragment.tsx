@@ -1,11 +1,12 @@
-import { RenderCallback, useFrame, useThree } from "@react-three/fiber";
+"use client";
+
+import { useThree } from "@react-three/fiber";
 import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from "react";
 import { IUniform, ShaderMaterial } from "three";
 
 type FragmentProps = {
     fragmentShader: string,
     uniforms?: any,
-    useFrameFn?: RenderCallback,
 };
 
 export type FragmentHandle = {
@@ -25,12 +26,11 @@ const VERTEX_SHADER = `
 `;
 
 const Fragment = forwardRef(function Fragment(props: FragmentProps, ref: ForwardedRef<FragmentHandle>) {
-    const { fragmentShader, uniforms, useFrameFn = ()=>{} } = props;
+    const { fragmentShader, uniforms } = props;
     const materialRef = useRef<ShaderMaterial>(null);
     const { viewport, invalidate } = useThree();
     const memoizedUniforms = useMemo(() => uniforms, [uniforms]);
 
-    useFrame(useFrameFn);
     useEffect(() => {
         if (materialRef && materialRef.current) {
             materialRef.current.needsUpdate = true;
