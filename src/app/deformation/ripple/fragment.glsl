@@ -1,4 +1,5 @@
 #pragma glslify: hsl2rgb = require(../../../glsl-modules/color/hsl2rgb)
+#pragma glslify: rotate2d = require(../../../glsl-modules/maths/rotate2d)
 
 varying vec2 v_uv;
 
@@ -9,10 +10,6 @@ uniform float u_decrease;
 uniform float u_speed;
 
 const float PI = 3.14;
-
-mat2 rotate2d(float angle) {
-  return mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
-}
 
 void main() {
   vec2 canvas_size = gl_FragCoord.xy / v_uv;

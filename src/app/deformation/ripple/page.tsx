@@ -56,10 +56,10 @@ function RippleControl({fragmentRef, controlUiTunnel}: FragmentLogic) {
   return (
     <ControlUiTunnel>
       <div className={styles.shaderControlWrapper}>
-        <NumberInput className={styles.shaderControl} label="Frequence" onChange={setFrequence} value={frequence} min={0.0} max={100.0} />
+        <NumberInput className={styles.shaderControl} label="Frequence" onChange={setFrequence} value={frequence} min={0.0} max={500.0} />
         <NumberInput className={styles.shaderControl} label="Amplitude" onChange={setAmplitude} value={amplitude} min={0.0} max={10.0} step={0.05} decimalScale={2} />
         <NumberInput className={styles.shaderControl} label="Decrease" onChange={setDecrease} value={decrease} min={0.0} max={100.0} decimalScale={2} />
-        <NumberInput className={styles.shaderControl} label="Speed" onChange={setSpeed} value={speed} min={0.0} max={10.0} step={0.1} decimalScale={2} />
+        <NumberInput className={styles.shaderControl} label="Speed" onChange={setSpeed} value={speed} min={0.0} max={10.0} step={0.05} decimalScale={2} />
       </div>
     </ControlUiTunnel>
     );
