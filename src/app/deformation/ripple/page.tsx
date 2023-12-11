@@ -5,7 +5,7 @@ import { FragmentLogic, FragmentView } from "@/components/shaders/FragmentView";
 import { useUniform, useUniformClock } from "@/components/shaders/uniforms";
 
 import { NumberInput } from "@mantine/core";
-import styles from "./page.module.css";
+import styles from "../../../styles/shaderControl.module.css";
 
 const UNIFORMS = {
   u_frequence: {

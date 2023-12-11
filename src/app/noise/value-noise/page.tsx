@@ -3,7 +3,7 @@
 import { NumberInput } from "@mantine/core";
 import fragmentShader from "./fragment.glsl";
 import { FragmentLogic, FragmentView } from "@/components/shaders/FragmentView";
-import styles from "./page.module.css";
+import styles from "../../../styles/shaderControl.module.css";
 import { useUniform } from "@/components/shaders/uniforms";
 
 const UNIFORMS = {
