@@ -1,11 +1,11 @@
 "use client";
 
 import fragmentShader from "./fragment.glsl";
-import { useEffect, useState } from "react";
 import { FragmentLogic, FragmentView } from "@/components/shaders/FragmentView";
+import { useUniform, useUniformClock } from "@/components/shaders/uniforms";
+
 import { NumberInput } from "@mantine/core";
 import styles from "./page.module.css";
-import { useFrame } from "@react-three/fiber";
 
 const UNIFORMS = {
   u_frequence: {
@@ -25,31 +25,15 @@ const UNIFORMS = {
   },
 };
 
-function RippleControl({fragmentRef, controlUiTunnel}: FragmentLogic) {
+function RippleControl({controlUiTunnel}: FragmentLogic) {
 
-  const [frequence, setFrequence] = useState<number | string>(UNIFORMS.u_frequence.value);
-  const [amplitude, setAmplitude] = useState<number | string>(UNIFORMS.u_amplitude.value);
-  const [decrease, setDecrease] = useState<number | string>(UNIFORMS.u_decrease.value);
-  const [speed, setSpeed] = useState<number | string>(UNIFORMS.u_speed.value);
+  useUniformClock("u_time");
+  const [frequence, setFrequence] = useUniform("u_frequence", 20.0);
+  const [amplitude, setAmplitude] = useUniform("u_amplitude", 0.1);
+  const [decrease, setDecrease] = useUniform("u_decrease", 10.0);
+  const [speed, setSpeed] = useUniform("u_speed", 0.1);
+
   const ControlUiTunnel = controlUiTunnel;
-
-  useEffect(() => {
-    if (fragmentRef.current?.uniforms) {
-      const uniforms = fragmentRef.current?.uniforms;
-      uniforms.u_frequence.value = frequence;
-      uniforms.u_amplitude.value = amplitude;
-      uniforms.u_decrease.value = decrease;
-      uniforms.u_speed.value = speed;
-      fragmentRef.current.render();
-    }
-  }, [frequence, amplitude, decrease, speed, fragmentRef]);
-
-  useFrame((state) => {
-      const { clock } = state;
-      if (fragmentRef.current?.uniforms) {
-        fragmentRef.current.uniforms.u_time.value = clock.elapsedTime;
-      }
-    });
 
     // TODO: when click, trigger a pulse
 

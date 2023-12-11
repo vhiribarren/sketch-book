@@ -8,6 +8,7 @@ import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import { IconAdjustments } from "@tabler/icons-react";
 import styles from "./FragmentView.module.css";
 import tunnel from "tunnel-rat";
+import { UniformsContext } from "./uniforms";
 
 
 type ChildrenProps = {
@@ -68,7 +69,9 @@ export function FragmentView({
                         ref={fragmentRef}
                     />
                     {Control &&
+                    <UniformsContext.Provider value={fragmentRef}>
                          <Control controlUiTunnel={ui.In} fragmentRef={fragmentRef} />
+                    </UniformsContext.Provider>
                     }
                 </FragmentCanvas>
 
