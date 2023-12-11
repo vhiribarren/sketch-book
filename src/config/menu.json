@@ -39,8 +39,8 @@
             "slug": "/noise/worley-random"
         },
         {
-            "title": "Voronoid Noise",
-            "slug": "/noise/voronoid"
+            "title": "Voronoi Noise",
+            "slug": "/noise/voronoi"
         }
     ]
 }]

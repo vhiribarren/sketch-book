@@ -12,7 +12,7 @@ const UNIFORMS = {
     },
 };
 
-function VoronoidNoiseControl({controlUiTunnel}: FragmentLogic) {
+function VoronoiNoiseControl({controlUiTunnel}: FragmentLogic) {
 
     const [cellCount, setCellCount] = useUniform("u_cell_count", UNIFORMS.u_cell_count.value);
 
@@ -31,10 +31,10 @@ function VoronoidNoiseControl({controlUiTunnel}: FragmentLogic) {
 export default function Page() {
     return (
         <FragmentView
-            title="Voronoid Noise"
+            title="Voronoi Noise"
             fragmentShader={fragmentShader}
             uniforms={UNIFORMS}
             withUi={true}
-            control={VoronoidNoiseControl} />
+            control={VoronoiNoiseControl} />
     );
 }
