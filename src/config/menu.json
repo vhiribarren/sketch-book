@@ -33,6 +33,10 @@
         {
             "title": "Value Noise",
             "slug": "/noise/value-noise"
+        },
+        {
+            "title": "Voronoid Noise",
+            "slug": "/noise/voronoid"
         }
     ]
 }]
