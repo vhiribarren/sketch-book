@@ -137,11 +137,11 @@
 .link {
   display: block;
   border-left: rem(1px) solid;
-  padding-left: rem(23px);
+  padding-left: rem(36px);
   padding-right: var(--mantine-spacing-md);
   margin-left: rem(7px);
-  height: rem(34px);
-  line-height: rem(34px);
+  line-height: rem(30px);
+  text-indent: -1em;
   border-top-right-radius: var(--mantine-radius-sm);
   border-bottom-right-radius: var(--mantine-radius-sm);
   font-size: var(--mantine-font-size-sm);
