@@ -1,7 +1,7 @@
 "use client";
 
-import { useFrame } from "@react-three/fiber";
-import { FragmentLogic, FragmentView } from "./FragmentView";
+import { FragmentView } from "./FragmentView";
+import { useUniformClock } from "./uniforms";
 
 type ManagedFragmentShaderProps = {
   fragmentShader: string,
@@ -16,13 +16,8 @@ const UNIFORMS = {
   },
 };
 
-function ManagedFragmentShaderControl({fragmentRef}: FragmentLogic) {
-  useFrame((state) => {
-    const { clock } = state;
-    if (fragmentRef.current?.uniforms) {
-      fragmentRef.current.uniforms.u_time.value = clock.getElapsedTime();
-    }
-  });
+function ManagedFragmentShaderControl() {
+  useUniformClock("u_time");
   return null;
 }
 

@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Group, NumberInput, Slider, Stack, Text } from "@mantine/core";
 import fragmentShader from "./fragment.glsl";
 import { FragmentLogic, FragmentView } from "@/components/shaders/FragmentView";
+import { useUniform } from "@/components/shaders/uniforms";
 
 const UNIFORMS = {
     u_frequence: {
@@ -11,15 +11,9 @@ const UNIFORMS = {
     },
 };
 
-function WhiteNoiseControl({ fragmentRef, controlUiTunnel }: FragmentLogic) {
+function WhiteNoiseControl({ controlUiTunnel }: FragmentLogic) {
 
-    const [frequence, setFrequence] = useState<number | string>(UNIFORMS.u_frequence.value);
-    useEffect(() => {
-        if (fragmentRef.current?.uniforms) {
-            fragmentRef.current.uniforms.u_frequence.value = frequence;
-            fragmentRef.current.render();
-        }
-    }, [frequence, fragmentRef]);
+    const [frequence, setFrequence] = useUniform("u_frequence", UNIFORMS.u_frequence.value);
     const ControlUiTunnel = controlUiTunnel;
 
     return (

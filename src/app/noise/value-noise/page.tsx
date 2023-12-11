@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { NumberInput } from "@mantine/core";
 import fragmentShader from "./fragment.glsl";
 import { FragmentLogic, FragmentView } from "@/components/shaders/FragmentView";
 import styles from "./page.module.css";
+import { useUniform } from "@/components/shaders/uniforms";
 
 const UNIFORMS = {
     u_freq_count: {
@@ -27,27 +27,15 @@ const UNIFORMS = {
     },
 };
 
-function ValueNoiseControl({fragmentRef, controlUiTunnel}: FragmentLogic) {
+function ValueNoiseControl({controlUiTunnel}: FragmentLogic) {
 
-    const [freqCount, setFreqCount] = useState<number | string>(UNIFORMS.u_freq_count.value);
-    const [freqBase, setFreqBase] = useState<number | string>(UNIFORMS.u_freq_base.value);
-    const [lacunarity, setLacunarity] = useState<number | string>(UNIFORMS.u_lacunarity.value);
-    const [gain, setGain] = useState<number | string>(UNIFORMS.u_gain.value);
-    const [shiftX, setShiftX] = useState<number | string>(UNIFORMS.u_shift_x.value);
-    const [shiftY, setShiftY] = useState<number | string>(UNIFORMS.u_shift_y.value);
+    const [freqCount, setFreqCount] = useUniform("u_freq_count", UNIFORMS.u_freq_count.value);
+    const [freqBase, setFreqBase] = useUniform("u_freq_base", UNIFORMS.u_freq_base.value);
+    const [lacunarity, setLacunarity] = useUniform("u_lacunarity", UNIFORMS.u_lacunarity.value);
+    const [gain, setGain] = useUniform("u_gain", UNIFORMS.u_gain.value);
+    const [shiftX, setShiftX] = useUniform("u_shift_x", UNIFORMS.u_shift_x.value);
+    const [shiftY, setShiftY] = useUniform("u_shift_y", UNIFORMS.u_shift_y.value);
     const ControlUiTunnel = controlUiTunnel;
-
-    useEffect(() => {
-        if (fragmentRef?.current?.uniforms) {
-            fragmentRef.current.uniforms.u_freq_count.value = freqCount;
-            fragmentRef.current.uniforms.u_freq_base.value = freqBase;
-            fragmentRef.current.uniforms.u_lacunarity.value = lacunarity;
-            fragmentRef.current.uniforms.u_gain.value = gain;
-            fragmentRef.current.uniforms.u_shift_x.value = shiftX;
-            fragmentRef.current.uniforms.u_shift_y.value = shiftY;
-            fragmentRef.current.render();
-        }
-    }, [freqCount, freqBase, lacunarity, gain, shiftX, shiftY, fragmentRef]);
 
     return (
         <ControlUiTunnel>

@@ -28,10 +28,10 @@ const UNIFORMS = {
 function RippleControl({controlUiTunnel}: FragmentLogic) {
 
   useUniformClock("u_time");
-  const [frequence, setFrequence] = useUniform("u_frequence", 20.0);
-  const [amplitude, setAmplitude] = useUniform("u_amplitude", 0.1);
-  const [decrease, setDecrease] = useUniform("u_decrease", 10.0);
-  const [speed, setSpeed] = useUniform("u_speed", 0.1);
+  const [frequence, setFrequence] = useUniform("u_frequence", UNIFORMS.u_frequence.value);
+  const [amplitude, setAmplitude] = useUniform("u_amplitude", UNIFORMS.u_amplitude.value);
+  const [decrease, setDecrease] = useUniform("u_decrease", UNIFORMS.u_decrease.value);
+  const [speed, setSpeed] = useUniform("u_speed",UNIFORMS.u_speed.value);
 
   const ControlUiTunnel = controlUiTunnel;
 

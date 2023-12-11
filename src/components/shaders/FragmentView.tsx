@@ -2,7 +2,7 @@
 
 import { ActionIcon, Affix, Drawer, Flex, Stack, Text, Title } from "@mantine/core";
 import FragmentCanvas from "./FragmentCanvas";
-import React, { RefObject, useRef } from "react";
+import React, { useRef } from "react";
 import Fragment, { FragmentHandle } from "./Fragment";
 import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import { IconAdjustments } from "@tabler/icons-react";
@@ -16,7 +16,6 @@ type ChildrenProps = {
 };
 
 export type FragmentLogic = {
-    fragmentRef: RefObject<FragmentHandle>,
     controlUiTunnel: React.FC<ChildrenProps>,
 };
 
@@ -40,7 +39,7 @@ export function FragmentView({
     withUi = false, autoRender = false
 } : FragmentViewProps) {
 
-    const fragmentRef = useRef(null);
+    const fragmentRef = useRef<FragmentHandle>(null!);
     const { width } = useViewportSize();
     const drawerTargetRef = useRef<HTMLDivElement>(null);
     const isMobile = (width as Pixels) < DESKTOP_THRESHOLD;
@@ -70,7 +69,7 @@ export function FragmentView({
                     />
                     {Control &&
                     <UniformsContext.Provider value={fragmentRef}>
-                         <Control controlUiTunnel={ui.In} fragmentRef={fragmentRef} />
+                         <Control controlUiTunnel={ui.In} />
                     </UniformsContext.Provider>
                     }
                 </FragmentCanvas>

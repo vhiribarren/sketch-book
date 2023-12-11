@@ -1,11 +1,10 @@
 "use client";
 
 import fragmentShader from "./fragment.glsl";
-import { useEffect, useState } from "react";
 import { FragmentLogic, FragmentView } from "@/components/shaders/FragmentView";
 import { NumberInput } from "@mantine/core";
 import styles from "./page.module.css";
-import { useFrame } from "@react-three/fiber";
+import { useUniform, useUniformClock } from "@/components/shaders/uniforms";
 
 const UNIFORMS = {
   u_frequence: {
@@ -22,31 +21,14 @@ const UNIFORMS = {
   },
 };
 
-function CircleGridControl({fragmentRef, controlUiTunnel}: FragmentLogic) {
+function CircleGridControl({controlUiTunnel}: FragmentLogic) {
 
-  const [frequence, setFrequence] = useState<number | string>(UNIFORMS.u_frequence.value);
-  const [amplitude, setAmplitude] = useState<number | string>(UNIFORMS.u_amplitude.value);
-  const [speed, setSpeed] = useState<number | string>(UNIFORMS.u_speed.value);
+  useUniformClock("u_time");
+  const [frequence, setFrequence] = useUniform("u_frequence", UNIFORMS.u_frequence.value);
+  const [amplitude, setAmplitude] = useUniform("u_amplitude", UNIFORMS.u_amplitude.value);
+  const [speed, setSpeed] = useUniform("u_speed",UNIFORMS.u_speed.value);
+
   const ControlUiTunnel = controlUiTunnel;
-
-  useEffect(() => {
-    if (fragmentRef.current?.uniforms) {
-      const uniforms = fragmentRef.current?.uniforms;
-      uniforms.u_frequence.value = frequence;
-      uniforms.u_amplitude.value = amplitude;
-      uniforms.u_speed.value = speed;
-      fragmentRef.current.render();
-    }
-  }, [frequence, amplitude, speed, fragmentRef]);
-
-  useFrame((state) => {
-      const { clock } = state;
-      if (fragmentRef.current?.uniforms) {
-        fragmentRef.current.uniforms.u_time.value = clock.elapsedTime;
-      }
-    });
-
-    // TODO: when click, trigger a pulse
 
   return (
     <ControlUiTunnel>
