@@ -35,6 +35,10 @@
             "slug": "/noise/value-noise"
         },
         {
+            "title": "Random Worley Noise",
+            "slug": "/noise/worley-random"
+        },
+        {
             "title": "Voronoid Noise",
             "slug": "/noise/voronoid"
         }
