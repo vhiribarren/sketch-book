@@ -2,7 +2,7 @@
 
 import { ActionIcon, Affix, Drawer, Flex, Stack, Text, Title } from "@mantine/core";
 import FragmentCanvas from "./FragmentCanvas";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Fragment, { FragmentHandle } from "./Fragment";
 import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import { IconAdjustments } from "@tabler/icons-react";
@@ -35,7 +35,7 @@ const DESKTOP_THRESHOLD: Pixels = 680;
 
 
 export function FragmentView({
-    control, fragmentShader, uniforms, title, description,
+    control, fragmentShader, title, description,
     withUi = false, autoRender = false
 } : FragmentViewProps) {
 
@@ -47,6 +47,22 @@ export function FragmentView({
     const [isDrawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(isDesktop);
     const Control = control;
     const ui = tunnel();
+
+    const [uniforms, setUniforms] = useState({});
+    const addUniform = (uniformName, defaultValue) => {
+        console.log("adduniform")
+        if (uniformName in uniforms) {
+            return;
+        }
+        setUniforms((state) => ({... state, [uniformName]: {value: defaultValue}}));
+    };
+
+    const [loadFragment, setLoadFragment] = useState(control ? false : true);
+    useEffect(() => {
+        console.log("load fragment, was: ", loadFragment);
+        console.log(uniforms);
+        setLoadFragment(true);
+    }, []);
 
     return (
 
@@ -62,13 +78,14 @@ export function FragmentView({
                 style={{ height: "100%" }}>
 
                 <FragmentCanvas autoRender={autoRender}>
-                    <Fragment
+                    {loadFragment &&
+                        <Fragment
                         uniforms={uniforms}
                         fragmentShader={fragmentShader}
-                        ref={fragmentRef}
-                    />
+                        ref={fragmentRef} />
+                    }
                     {Control &&
-                    <UniformsContext.Provider value={fragmentRef}>
+                    <UniformsContext.Provider value={{fragmentRef, addUniform}}>
                          <Control controlUiTunnel={ui.In} />
                     </UniformsContext.Provider>
                     }
