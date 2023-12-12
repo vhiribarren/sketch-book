@@ -8,7 +8,7 @@ import { useUniform } from "@/components/shaders/uniforms";
 
 function ValueNoiseControl({controlUiTunnel}: FragmentLogic) {
 
-    const [freqCount, setFreqCount] = useUniform("u_freq_count", 1);
+    const [freqCount, setFreqCount] = useUniform("u_freq_count", 8);
     const [freqBase, setFreqBase] = useUniform("u_freq_base", 2.0);
     const [lacunarity, setLacunarity] = useUniform("u_lacunarity", 2.0);
     const [gain, setGain] = useUniform("u_gain", 0.5);

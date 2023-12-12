@@ -6,7 +6,7 @@ import { FragmentLogic, FragmentView } from "@/components/shaders/FragmentView";
 import { useUniform } from "@/components/shaders/uniforms";
 
 function WhiteNoiseControl({ controlUiTunnel }: FragmentLogic) {
-    const [frequence, setFrequence] = useUniform("u_frequence", 4.0);
+    const [frequence, setFrequence] = useUniform("u_frequence", 50.0);
     const ControlUiTunnel = controlUiTunnel;
 
     return (
