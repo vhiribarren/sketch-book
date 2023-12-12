@@ -24,7 +24,7 @@ function VoronoiNoiseControl({controlUiTunnel}: FragmentLogic) {
 export default function Page() {
     return (
         <FragmentView
-            title="Voronoi Noise"
+            title="Voronoi Areas"
             fragmentShader={fragmentShader}
             withUi={true}
             control={VoronoiNoiseControl} />

@@ -39,8 +39,12 @@
             "slug": "/noise/worley-random"
         },
         {
-            "title": "Voronoi Noise",
-            "slug": "/noise/voronoi"
+            "title": "Voronoi Areas",
+            "slug": "/noise/voronoi-areas"
+        },
+        {
+            "title": "Voronoi Lines",
+            "slug": "/noise/voronoi-lines"
         }
     ]
 }]
