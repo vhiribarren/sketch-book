@@ -21,7 +21,6 @@ export type FragmentLogic = {
 
 type FragmentViewProps = {
     fragmentShader: string,
-    uniforms?: any,
     title?: string,
     description?: string,
     autoRender?: boolean,
@@ -48,21 +47,19 @@ export function FragmentView({
     const Control = control;
     const ui = tunnel();
 
+    const [loadFragment, setLoadFragment] = useState(control ? false : true);
     const [uniforms, setUniforms] = useState({});
-    const addUniform = (uniformName, defaultValue) => {
-        console.log("adduniform")
+    const addUniform = (uniformName: string, defaultValue: any) => {
         if (uniformName in uniforms) {
             return;
         }
         setUniforms((state) => ({... state, [uniformName]: {value: defaultValue}}));
     };
-
-    const [loadFragment, setLoadFragment] = useState(control ? false : true);
     useEffect(() => {
-        console.log("load fragment, was: ", loadFragment);
-        console.log(uniforms);
-        setLoadFragment(true);
-    }, []);
+        if (Object.keys(uniforms).length !== 0) {
+            setLoadFragment(true);
+        }
+    }, [uniforms]);
 
     return (
 

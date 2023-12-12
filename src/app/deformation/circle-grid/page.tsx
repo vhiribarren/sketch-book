@@ -6,28 +6,11 @@ import { NumberInput } from "@mantine/core";
 import styles from "../../../styles/shaderControl.module.css";
 import { useUniform, useUniformClock } from "@/components/shaders/uniforms";
 
-const UNIFORMS = {
-  u_frequence: {
-      value: 30.0,
-  },
-  u_amplitude: {
-      value: 0.1,
-  },
-  u_speed: {
-    value: 0.3,
-  },
-  u_time: {
-      value: 0.0,
-  },
-};
-
 function CircleGridControl({controlUiTunnel}: FragmentLogic) {
-
   useUniformClock("u_time");
-  const [frequence, setFrequence] = useUniform("u_frequence", UNIFORMS.u_frequence.value);
-  const [amplitude, setAmplitude] = useUniform("u_amplitude", UNIFORMS.u_amplitude.value);
-  const [speed, setSpeed] = useUniform("u_speed",UNIFORMS.u_speed.value);
-
+  const [frequence, setFrequence] = useUniform("u_frequence", 30.0);
+  const [amplitude, setAmplitude] = useUniform("u_amplitude", 0.1);
+  const [speed, setSpeed] = useUniform("u_speed", 0.3);
   const ControlUiTunnel = controlUiTunnel;
 
   return (
@@ -41,14 +24,12 @@ function CircleGridControl({controlUiTunnel}: FragmentLogic) {
     );
 }
 
-
 export default function Page() {
   return (
     <FragmentView
       title="Circle Grid"
       autoRender={true}
       fragmentShader={fragmentShader}
-      uniforms={UNIFORMS}
       withUi={true}
       control={CircleGridControl} />
   );

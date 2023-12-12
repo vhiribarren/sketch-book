@@ -10,12 +10,6 @@ type ManagedFragmentShaderProps = {
   description?: string,
 }
 
-const UNIFORMS = {
-  u_time: {
-    value: 1.0,
-  },
-};
-
 function ManagedFragmentShaderControl() {
   useUniformClock("u_time");
   return null;
@@ -27,7 +21,6 @@ export default function ManagedFragmentShader({ fragmentShader, withTime, title,
       title={title}
       description={description}
       autoRender={withTime}
-      uniforms={UNIFORMS}
       fragmentShader={fragmentShader}
       control={ManagedFragmentShaderControl} />
   );

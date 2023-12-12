@@ -6,16 +6,9 @@ import { FragmentLogic, FragmentView } from "@/components/shaders/FragmentView";
 import styles from "../../../styles/shaderControl.module.css";
 import { useUniform } from "@/components/shaders/uniforms";
 
-const UNIFORMS = {
-    u_cell_count: {
-        value: 20,
-    },
-};
 
 function VoronoiNoiseControl({controlUiTunnel}: FragmentLogic) {
-
-    const [cellCount, setCellCount] = useUniform("u_cell_count", UNIFORMS.u_cell_count.value);
-
+    const [cellCount, setCellCount] = useUniform("u_cell_count", 20);
     const ControlUiTunnel = controlUiTunnel;
 
     return (
@@ -33,7 +26,6 @@ export default function Page() {
         <FragmentView
             title="Voronoi Noise"
             fragmentShader={fragmentShader}
-            uniforms={UNIFORMS}
             withUi={true}
             control={VoronoiNoiseControl} />
     );

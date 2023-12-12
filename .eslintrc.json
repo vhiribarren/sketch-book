@@ -22,6 +22,12 @@
     "@stylistic/js/quotes": [
       "warn",
       "double"
+    ],
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
     ]
   }
 }

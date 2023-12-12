@@ -6,19 +6,10 @@ import { FragmentLogic, FragmentView } from "@/components/shaders/FragmentView";
 import styles from "../../../styles/shaderControl.module.css";
 import { useUniform } from "@/components/shaders/uniforms";
 
-const UNIFORMS = {
-    u_cell_count: {
-        value: 20,
-    },
-    u_luminosity: {
-        value: 2.0,
-    },
-};
-
 function VoronoidNoiseControl({controlUiTunnel}: FragmentLogic) {
 
-    const [cellCount, setCellCount] = useUniform("u_cell_count", UNIFORMS.u_cell_count.value);
-    const [luminosity, setLuminosity] = useUniform("u_luminosity", UNIFORMS.u_luminosity.value);
+    const [cellCount, setCellCount] = useUniform("u_cell_count", 20);
+    const [luminosity, setLuminosity] = useUniform("u_luminosity", 2.0);
 
     const ControlUiTunnel = controlUiTunnel;
 
@@ -32,13 +23,11 @@ function VoronoidNoiseControl({controlUiTunnel}: FragmentLogic) {
     );
 }
 
-
 export default function Page() {
     return (
         <FragmentView
             title="Random Worley Noise"
             fragmentShader={fragmentShader}
-            uniforms={UNIFORMS}
             withUi={true}
             control={VoronoidNoiseControl} />
     );

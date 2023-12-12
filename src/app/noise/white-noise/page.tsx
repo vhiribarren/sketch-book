@@ -5,15 +5,8 @@ import fragmentShader from "./fragment.glsl";
 import { FragmentLogic, FragmentView } from "@/components/shaders/FragmentView";
 import { useUniform } from "@/components/shaders/uniforms";
 
-const UNIFORMS = {
-    u_frequence: {
-        value: 4.0,
-    },
-};
-
 function WhiteNoiseControl({ controlUiTunnel }: FragmentLogic) {
-
-    const [frequence, setFrequence] = useUniform("u_frequence", UNIFORMS.u_frequence.value);
+    const [frequence, setFrequence] = useUniform("u_frequence", 4.0);
     const ControlUiTunnel = controlUiTunnel;
 
     return (
@@ -35,7 +28,6 @@ export default function Page() {
             title="White Noise"
             description="Simple raw white noise without any processing. Frequency can be modified."
             fragmentShader={fragmentShader}
-            uniforms={UNIFORMS}
             withUi={true}
             control={WhiteNoiseControl} />
     );

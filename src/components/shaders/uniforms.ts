@@ -2,7 +2,12 @@ import { useFrame } from "@react-three/fiber";
 import { Dispatch, MutableRefObject, SetStateAction, createContext, useContext, useEffect, useState } from "react";
 import { FragmentHandle } from "./Fragment";
 
-export const UniformsContext = createContext<MutableRefObject<FragmentHandle>>(null!);
+type UniformsContextType = {
+  fragmentRef: MutableRefObject<FragmentHandle>,
+  addUniform: (_uniformName: string, _defaultValue: any) => void,
+}
+
+export const UniformsContext = createContext<UniformsContextType>(null!);
 
 export function useFragmentRef(): MutableRefObject<FragmentHandle> {
     return useContext(UniformsContext).fragmentRef;
