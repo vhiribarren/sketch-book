@@ -9,6 +9,8 @@ import { useUniform } from "@/components/shaders/uniforms";
 
 const DISTANCE_TYPE = ["Euclidean Distance", "Manhattan Distance"];
 const DRAW_TYPE = ["Worley field", "Voronoi Area", "Lines"];
+const GENERATION_TYPE = ["Grid", "Random"];
+
 
 function VoronoiNoiseControl({controlUiTunnel}: FragmentLogic) {
     const [freq, setFreq] = useUniform<number>("u_frequence", 20.0);
@@ -17,6 +19,9 @@ function VoronoiNoiseControl({controlUiTunnel}: FragmentLogic) {
     const [drawType, setDrawType] = useUniform<number>("u_draw_type", 0);
     const [displayCellCenter, setDisplayCellCenter] = useUniform<number>("u_display_cell_center", 0);
     const [luminosity, setLuminosity] = useUniform("u_luminosity", 1.0);
+    const [generationType, setGenerationType] = useUniform<number>("u_generation_type", 0);
+    const [cellCount, setCellCount] = useUniform("u_cell_count", 10);
+
 
     const ControlUiTunnel = controlUiTunnel;
 
@@ -31,7 +36,20 @@ function VoronoiNoiseControl({controlUiTunnel}: FragmentLogic) {
                     value={DRAW_TYPE[drawType]}
                     onChange={(e) => setDrawType(DRAW_TYPE.indexOf(e!))}
                 />
-                <NumberInput className={styles.shaderControl} label="Frequence" onChange={setFreq} value={freq} min={1} max={10000} decimalScale={2} />
+                <Select
+                    className={styles.shaderControl}
+                    label="Generation type"
+                    placeholder="Pick value"
+                    data={GENERATION_TYPE}
+                    value={GENERATION_TYPE[generationType]}
+                    onChange={(e) => setGenerationType(GENERATION_TYPE.indexOf(e!))}
+                />
+                {generationType === 1 &&
+                    <NumberInput className={styles.shaderControl} label="Number of cells" onChange={setCellCount} value={cellCount} min={1} max={1000} allowDecimal={false} />
+                }
+                {generationType === 0 &&
+                    <NumberInput className={styles.shaderControl} label="Frequence" onChange={setFreq} value={freq} min={1} max={10000} decimalScale={2} />
+                }
                 {drawType === 2 &&
                      <NumberInput className={styles.shaderControl} label="Line precision" onChange={setLinePrecision} value={linePrecision} min={0.0} max={1.0} step={0.001} decimalScale={4} />
                 }

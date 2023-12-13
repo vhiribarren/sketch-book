@@ -35,20 +35,8 @@
             "slug": "/noise/value-noise"
         },
         {
-            "title": "Worley Random",
-            "slug": "/noise/worley-random"
-        },
-        {
-            "title": "Voronoi Random Areas",
-            "slug": "/noise/voronoi-areas"
-        },
-        {
-            "title": "Voronoi Random Lines",
-            "slug": "/noise/voronoi-lines"
-        },
-        {
-            "title": "Voronoi Grid",
-            "slug": "/noise/voronoi-grid"
+            "title": "Voronoi",
+            "slug": "/noise/voronoi"
         }
     ]
 }]
