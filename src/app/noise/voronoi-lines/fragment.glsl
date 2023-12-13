@@ -14,10 +14,6 @@ vec2 generate_cell(uint id) {
     return vec2(random(vec2(float(id), 0.0)), random(vec2(float(id), 1.0)));    
 }
 
-float generate_color(uint id) {
-    return random(vec2(id));    
-}
-
 float voronoi_distance(vec2 left, vec2 right) {
     if (u_distance_type == DISTANCE_MANHATTAN) {
         vec2 diff = right - left;
