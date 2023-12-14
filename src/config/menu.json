@@ -1,16 +1,13 @@
 [{
     "group": "Basic",
-    "pages": [{
-            "title": "Static Gradient",
-            "slug": "/basic/static-gradient"
+    "pages": [
+        {
+            "title": "Radial HSL",
+            "slug": "/basic/radial-hsl"
         },
         {
             "title": "Time Gradient",
             "slug": "/basic/time-gradient"
-        },
-        {
-            "title": "Radial HSL",
-            "slug": "/basic/radial-hsl"
         }
     ]
 }, {
