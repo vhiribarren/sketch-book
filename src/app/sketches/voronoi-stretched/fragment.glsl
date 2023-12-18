@@ -4,31 +4,25 @@ varying vec2 v_uv;
 
 const float INFINITY = 1.0 / 0.0;
 const float FREQUENCE = 31.0;
-const float LINE_PRECISION = 0.1;
-
+const float LINE_PRECISION = 0.01;
+const float DOT_SIZE = 0.003;
+const float GRID_SIZE = 0.0015;
 
 ivec2 uv_to_grid(vec2 uv) {
-    //return ivec2(uv/2.0);
-    //return ivec2(uv.x, log2(uv.y + 1.0));
     int grid_y = int(log2(uv.y + 1.0));
     int grid_x = int(float(uv.x) / exp2(float(grid_y))) ;
     return ivec2(grid_x, grid_y);
 }
 
-vec2 gen_cell_at_grid(int x, int y) {
-    //return 2.0*(vec2(x, y) + 0.5);    
-    //return vec2(float(x), exp2(float(y))-1.0)*(vec2(1.0, 1.0));
-    //return vec2(float(x)+0.0, exp2(float(y-1))-1.0) + vec2(0.0, 0.0) * vec2(float(x), exp2(float(y-1)));  
-    return vec2(float(x) * exp2(float(y -1)), exp2(float(y-1))-1.0) + vec2(random(vec2(y, x)), random(vec2(x, y))) * vec2(exp2(float(y-1)), exp2(float(y-1)));  
-    //return vec2(float(x) * exp2(float(y -1)), exp2(float(y-1))-1.0);  
-
+vec2 gen_cell_at_grid(int x, int y) { 
+    return vec2(float(x) * exp2(float(y)), exp2(float(y))-1.0) + vec2(random(vec2(y, x)), random(vec2(x, y))) * vec2(exp2(float(y-1)), exp2(float(y-1)));  
 }
 
 void main() {
     vec2 canvas_size = gl_FragCoord.xy / v_uv;
     float canvas_ratio = canvas_size.x / canvas_size.y;
     vec2 uv = v_uv;
-    //uv.y = 1.0 - uv.y;
+    //uv.y = 1.0 - uv.y; // Upside down
     //uv -= 0.01;
     uv *= vec2(canvas_ratio, 1.0); // Cancel screen deformation
 
@@ -40,10 +34,13 @@ void main() {
     float min_dist = INFINITY;
     float snd_min_dist = INFINITY;
     vec2 min_vcell;
-    int scan_max = 2; //int(exp2(float(grid.y))); // 1;
-    for (int i = -30; i <= 10; i++) {
-        for (int j = -1; j <= 2; j++) {
-            vec2 current_vcell = gen_cell_at_grid(grid.x + i, grid.y + j);
+
+    for (int i = -1; i <= 1; i++) {
+        int grid_y_scan = grid.y - i;
+        int grid_x_scan_min = int(float(grid.x -1) * exp2(float(i)));
+        int grid_x_scan_max = int(float(grid.x +1) * exp2(float(i)));
+        for (int grid_x_scan = grid_x_scan_min; grid_x_scan<= grid_x_scan_max; grid_x_scan++) {
+            vec2 current_vcell = gen_cell_at_grid(grid_x_scan,grid_y_scan);
             float vcell_dist = distance(uv, current_vcell);
             if (vcell_dist < min_dist) {
                 snd_min_dist = min_dist;
@@ -54,17 +51,17 @@ void main() {
     }
 
     // Cell dots
-    float dot_col = 1.0-step(0.1, min_dist);
+    float dot_col = 1.0-step(DOT_SIZE * FREQUENCE, min_dist);
     // Web
     float web_col;
-    if (abs(min_dist - snd_min_dist) < LINE_PRECISION) {
+    if (abs(min_dist - snd_min_dist) < LINE_PRECISION * FREQUENCE ) {
         web_col = 1.0;
     }
     // Worley field
     float worley_col = 0.02*min_dist;
     // Grid
-    float grid_col = step(0.98, fract(uv.y)) + step(0.98, fract(uv.x));
-
+    float grid_col = step(1.0-GRID_SIZE*FREQUENCE, fract(uv.y)) + step(1.0-GRID_SIZE*FREQUENCE, fract(uv.x));
+    //float grid_col = step(0.98, distance(uv.y, grid)
     // Final color
     vec3 fragCol;
     //fragCol.r = grid_col;
