@@ -13,7 +13,7 @@ export function useFragmentRef(): MutableRefObject<FragmentHandle> {
     return useContext(UniformsContext).fragmentRef;
 }
 
-export function useUniform<S extends string | number>(uniformName: string, defaultValue: S | (() => S)): [S, Dispatch<SetStateAction<string | number>>] {
+export function useUniform<S extends string | number | boolean>(uniformName: string, defaultValue: S | (() => S)): [S, Dispatch<SetStateAction<string | number | boolean>>] {
   const fragmentRef = useFragmentRef();
   const addUniform = useContext(UniformsContext).addUniform;
 
@@ -25,7 +25,7 @@ export function useUniform<S extends string | number>(uniformName: string, defau
         fragmentRef.current.render();
       }
   }, [uniformName, uniformState, fragmentRef]);
-  return [uniformState, setUniformState as Dispatch<SetStateAction<string | number>>];
+  return [uniformState, setUniformState as Dispatch<SetStateAction<string | number | boolean>>];
 }
 
 export function useUniformClock(uniformName: string) {

@@ -2,11 +2,14 @@
 
 varying vec2 v_uv;
 
+uniform float u_freq;
+uniform float u_line_precision;
+uniform float u_grid_line_size;
+uniform bool u_display_cell_center;
+uniform bool u_display_exp_grid;
+
 const float INFINITY = 1.0 / 0.0;
-const float FREQUENCE = 125.0;
-const float LINE_PRECISION = 0.005;
 const float DOT_SIZE = 0.003;
-const float GRID_SIZE = 0.0015;
 
 
 ivec2 uv_to_grid_snapped(vec2 uv) {
@@ -39,7 +42,7 @@ void main() {
 
     //TODO faire aussi du voronoi avec des octaves, des grosses cellules replies de petites cellules avec un coeff de ligne qui baisse
 
-    uv *= FREQUENCE; // zoom out
+    uv *= u_freq; // zoom out
 
     ivec2 grid = uv_to_grid_snapped(uv);
     float min_dist = INFINITY;
@@ -61,24 +64,20 @@ void main() {
         }
     }
 
-    // Cell dots
-    float dot_col = 1.0-step(DOT_SIZE * FREQUENCE, min_dist);
     // Web
     float web_col;
-    if (abs(min_dist - snd_min_dist) < LINE_PRECISION * FREQUENCE ) {
+    if (abs(min_dist - snd_min_dist) < u_line_precision * u_freq ) {
         web_col = 1.0;
     }
-    // Worley field
-    float worley_col = 0.02*min_dist;
-    // Grid
-    //float grid_col = step(1.0-GRID_SIZE*FREQUENCE, fract(uv.y)) + step(1.0-GRID_SIZE*FREQUENCE, fract(uv.x));
-    float exp_grid_col = 1.0-step(GRID_SIZE*FREQUENCE, abs(uv.x- grid_to_global_coords(grid.x, grid.y).x))* step(GRID_SIZE*FREQUENCE, abs(uv.y- grid_to_global_coords(grid.x, grid.y).y));
-    // Final color
     vec3 fragCol;
-    //fragCol.r = grid_col;
-    fragCol.r = exp_grid_col;
-    fragCol = max(fragCol, vec3(dot_col, dot_col, 0.0));
-    //fragCol = max(fragCol, vec3(worley_col));
+    if (u_display_exp_grid) {
+        float exp_grid_col = 1.0-step(u_grid_line_size*u_freq, abs(uv.x- grid_to_global_coords(grid.x, grid.y).x))* step(u_grid_line_size*u_freq, abs(uv.y- grid_to_global_coords(grid.x, grid.y).y));
+        fragCol.r = exp_grid_col;
+    }
+    if (u_display_cell_center) {
+        float dot_col = 1.0-step(DOT_SIZE * u_freq, min_dist);
+        fragCol = max(fragCol, vec3(dot_col, dot_col, 0.0));
+    }
     fragCol.b = max(fragCol.b, (web_col));
     gl_FragColor =  vec4(fragCol, 1.0);
 }

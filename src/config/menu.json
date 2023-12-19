@@ -34,6 +34,10 @@
         {
             "title": "Voronoi",
             "slug": "/noise/voronoi"
+        },
+        {
+            "title": "Exponential Voronoi",
+            "slug": "/noise/voronoi-exponential"
         }
     ]
 }]
