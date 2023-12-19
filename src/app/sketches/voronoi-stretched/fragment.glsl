@@ -3,8 +3,8 @@
 varying vec2 v_uv;
 
 const float INFINITY = 1.0 / 0.0;
-const float FREQUENCE = 31.0;
-const float LINE_PRECISION = 0.01;
+const float FREQUENCE = 7.0;
+const float LINE_PRECISION = 0.005;
 const float DOT_SIZE = 0.003;
 const float GRID_SIZE = 0.0015;
 
@@ -15,7 +15,10 @@ ivec2 uv_to_grid(vec2 uv) {
 }
 
 vec2 gen_cell_at_grid(int x, int y) { 
-    return vec2(float(x) * exp2(float(y)), exp2(float(y))-1.0) + vec2(random(vec2(y, x)), random(vec2(x, y))) * vec2(exp2(float(y-1)), exp2(float(y-1)));  
+    return vec2(
+        float(x) * exp2(float(y)),
+        exp2(float(y))-1.0) +  vec2(exp2(float(y))) * vec2(random(vec2(y, float(x)+1.5)), random(vec2(x, y))
+    );  
 }
 
 void main() {
@@ -64,7 +67,7 @@ void main() {
     //float grid_col = step(0.98, distance(uv.y, grid)
     // Final color
     vec3 fragCol;
-    //fragCol.r = grid_col;
+    fragCol.r = grid_col;
     fragCol = max(fragCol, vec3(dot_col, dot_col, 0.0));
     //fragCol = max(fragCol, vec3(worley_col));
     fragCol.b = max(fragCol.b, (web_col));
