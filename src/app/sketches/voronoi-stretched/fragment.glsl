@@ -3,15 +3,23 @@
 varying vec2 v_uv;
 
 const float INFINITY = 1.0 / 0.0;
-const float FREQUENCE = 7.0;
+const float FREQUENCE = 125.0;
 const float LINE_PRECISION = 0.005;
 const float DOT_SIZE = 0.003;
 const float GRID_SIZE = 0.0015;
 
-ivec2 uv_to_grid(vec2 uv) {
+
+ivec2 uv_to_grid_snapped(vec2 uv) {
     int grid_y = int(log2(uv.y + 1.0));
     int grid_x = int(float(uv.x) / exp2(float(grid_y))) ;
     return ivec2(grid_x, grid_y);
+}
+
+vec2 grid_to_global_coords(int x, int y) {
+    return vec2(
+        float(x) * exp2(float(y)),
+        exp2(float(y))-1.0
+    ); 
 }
 
 vec2 gen_cell_at_grid(int x, int y) { 
@@ -33,7 +41,7 @@ void main() {
 
     uv *= FREQUENCE; // zoom out
 
-    ivec2 grid = uv_to_grid(uv);
+    ivec2 grid = uv_to_grid_snapped(uv);
     float min_dist = INFINITY;
     float snd_min_dist = INFINITY;
     vec2 min_vcell;
@@ -63,11 +71,12 @@ void main() {
     // Worley field
     float worley_col = 0.02*min_dist;
     // Grid
-    float grid_col = step(1.0-GRID_SIZE*FREQUENCE, fract(uv.y)) + step(1.0-GRID_SIZE*FREQUENCE, fract(uv.x));
-    //float grid_col = step(0.98, distance(uv.y, grid)
+    //float grid_col = step(1.0-GRID_SIZE*FREQUENCE, fract(uv.y)) + step(1.0-GRID_SIZE*FREQUENCE, fract(uv.x));
+    float exp_grid_col = 1.0-step(GRID_SIZE*FREQUENCE, abs(uv.x- grid_to_global_coords(grid.x, grid.y).x))* step(GRID_SIZE*FREQUENCE, abs(uv.y- grid_to_global_coords(grid.x, grid.y).y));
     // Final color
     vec3 fragCol;
-    fragCol.r = grid_col;
+    //fragCol.r = grid_col;
+    fragCol.r = exp_grid_col;
     fragCol = max(fragCol, vec3(dot_col, dot_col, 0.0));
     //fragCol = max(fragCol, vec3(worley_col));
     fragCol.b = max(fragCol.b, (web_col));
