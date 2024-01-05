@@ -36,7 +36,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <AppShell
               header={{ height: 60 }}
               navbar={{
-                width: 220,
+                width: 250,
                 breakpoint: "sm",
                 collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
               }}
