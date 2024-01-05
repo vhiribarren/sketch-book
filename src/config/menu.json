@@ -40,4 +40,11 @@
             "slug": "/noise/voronoi-exponential"
         }
     ]
+}, {
+    "group": "Ray Marching",
+    "pages": [{
+            "title": "Gizmos",
+            "slug": "/raymarching/gizmos"
+        }
+    ]
 }]
