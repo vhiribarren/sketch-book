@@ -45,6 +45,10 @@
     "pages": [{
             "title": "Gizmos",
             "slug": "/raymarching/gizmos"
+        },
+        {
+            "title": "Value Noise Field",
+            "slug": "/raymarching/value-noise-field"
         }
     ]
 }]
