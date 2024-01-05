@@ -20,23 +20,25 @@ float average_noise_smoothstep(vec2 scaled_uv) {
     return mix(top_avg, bottom_avg, percent.y);
 }
 
+float fbm(vec2 uv, float freq_base, uint freq_count, float gain, float lacunarity) {
+    float noise_val = 0.0;
+    float freq = freq_base;
+    float amp = 1.0;
+    float total_amplitude = 0.0;
+    for (uint i = 0u; i < freq_count; i++) {
+        total_amplitude += amp;
+        noise_val += amp * average_noise_smoothstep(vec2(uv.x, uv.y));
+        amp *= gain;
+        uv *= lacunarity;
+    }
+    return noise_val/total_amplitude;
+}
+
 
 void main() {
     vec2 size = gl_FragCoord.xy / v_uv;
     float ratio = size.x / size.y;
-    float scaled_u = v_uv.x * u_freq_base * ratio + u_shift_x;
-    float scaled_v = v_uv.y * u_freq_base + u_shift_y;
-    float noise_val = 0.0;
-    float freq = u_freq_base;
-    float amp = 1.0;
-    float total_amplitude = 0.0;
-    for (uint i = 0u; i < u_freq_count; i++) {
-        total_amplitude += amp;
-        noise_val += amp * average_noise_smoothstep(vec2(scaled_u, scaled_v));
-        amp *= u_gain;
-        scaled_u *= u_lacunarity;
-        scaled_v *= u_lacunarity;
-    }
-    noise_val /= total_amplitude;
+    vec2 uv = v_uv * vec2(u_freq_base) * vec2(ratio, 1.0) + vec2(u_shift_x, u_shift_y);
+    float noise_val = fbm(uv, u_freq_base, u_freq_count, u_gain, u_lacunarity);
     gl_FragColor =  vec4(vec3(noise_val), 1.0);
 }
