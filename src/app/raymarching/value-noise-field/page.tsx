@@ -15,12 +15,12 @@ function ValueNoiseRaymarchControl({controlUiTunnel}: FragmentLogic) {
     const [lacunarity, setLacunarity] = useUniform("u_lacunarity", 2.0);
     const [gain, setGain] = useUniform("u_gain", 0.5);
 
-    const [raymarchMaxSteps, setRaymarchMaxSteps] = useUniform("u_raymarch_max_steps", 500);
-    const [raymarchDelta, setRaymarchDelta] = useUniform("u_raymarch_delta", 0.01);
+    const [raymarchMaxSteps, setRaymarchMaxSteps] = useUniform("u_raymarch_max_steps", 50);
+    const [raymarchDelta, setRaymarchDelta] = useUniform("u_raymarch_delta", 0.001);
     const [focalLength, setFocalLength] = useUniform("u_focal_length", 1.0);
-    const [shiftX, setShiftX] = useUniform("u_shift_x", 1.0);
-    const [shiftY, setShiftY] = useUniform("u_shift_y", 1.0);
-    const [shiftZ, setShiftZ] = useUniform("u_shift_z", 5.0);
+    const [shiftX, setShiftX] = useUniform("u_shift_x", 0.0);
+    const [shiftY, setShiftY] = useUniform("u_shift_y", 1.5);
+    const [shiftZ, setShiftZ] = useUniform("u_shift_z", -2.0);
     const ControlUiTunnel = controlUiTunnel;
 
     return (
@@ -31,7 +31,7 @@ function ValueNoiseRaymarchControl({controlUiTunnel}: FragmentLogic) {
                 <NumberInput className={styles.shaderControl} label="Lacunarity" onChange={setLacunarity} value={lacunarity} min={0.0} step={0.1} decimalScale={2} />
                 <NumberInput className={styles.shaderControl} label="Gain" onChange={setGain} value={gain} min={0.0} step={0.1} decimalScale={2} />
                 <NumberInput className={styles.shaderControl} label="Raymarch Max Steps" onChange={setRaymarchMaxSteps} value={raymarchMaxSteps} allowDecimal={false} />
-                <NumberInput className={styles.shaderControl} label="Raymarch Delta" onChange={setRaymarchDelta} value={raymarchDelta} step={0.01} decimalScale={2} />
+                <NumberInput className={styles.shaderControl} label="Raymarch Delta" onChange={setRaymarchDelta} value={raymarchDelta} step={0.01} decimalScale={3} />
                 <NumberInput className={styles.shaderControl} label="Focal Length" onChange={setFocalLength} value={focalLength} step={0.1} decimalScale={2} />
                 <NumberInput className={styles.shaderControl} label="Shift X" onChange={setShiftX} value={shiftX} step={0.1} decimalScale={2} />
                 <NumberInput className={styles.shaderControl} label="Shift Y" onChange={setShiftY} value={shiftY} step={0.1} decimalScale={2} />

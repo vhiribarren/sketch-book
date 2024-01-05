@@ -71,7 +71,8 @@ vec3 raymarch_scene(vec3 ray_origin, vec3 ray_direction) {
                 color =  max(color, vec3(0.0, 1.0, 1.0));
             }
         }
-        raymarch_dist += u_raymarch_delta;
+        //raymarch_dist += u_raymarch_delta;
+        raymarch_dist += u_raymarch_delta * float(i); // Trick from https://iquilezles.org/articles/terrainmarching/
     }
     return color;
 }
