@@ -128,9 +128,8 @@ void main() {
     mat3x3 camera_transform = mat3x3(camera_axis_x, camera_axis_y, camera_axis_z);
 
     // Prepare rays
-    vec3 ray_dir_unormalized = camera_transform * vec3(canvas_local_pos, canvas_distance);
-    vec3 ray_origin =  camera_eye + ray_dir_unormalized;
-    vec3 ray_dir = normalize(ray_dir_unormalized);
+    vec3 ray_origin = camera_eye;
+    vec3 ray_dir = normalize(camera_transform * vec3(canvas_local_pos, canvas_distance));
 
     // Cast rays
     vec3 color = raymarch_scene(ray_origin, ray_dir);
