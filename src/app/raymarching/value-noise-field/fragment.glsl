@@ -7,10 +7,13 @@ uniform float u_lacunarity;
 uniform float u_gain;
 uniform float u_raymarch_delta;
 uniform int u_raymarch_max_steps;
+uniform bool u_with_linear_steps;
 uniform float u_focal_length;
 uniform float u_shift_x;
 uniform float u_shift_y;
 uniform float u_shift_z;
+uniform float u_pitch;
+uniform float u_yaw;
 
 varying vec2 v_uv;
 
@@ -42,13 +45,19 @@ float fbm(vec2 uv, float freq_base, uint freq_count, float gain, float lacunarit
     return noise_val/total_amplitude;
 }
 
-float field_height(vec2 uv) {
+float field_height(vec2 uv) {    
     return fbm(uv, u_freq_base, u_freq_count, u_gain, u_lacunarity);
 }
+
+//float field_height(vec2 uv) {
+//    return random(floor(uv* u_freq_base)) ;
+//}
 
 vec3 raymarch_scene(vec3 ray_origin, vec3 ray_direction) {
     float raymarch_dist = 0.0;
     vec3 color = vec3(0.0, 0.0, 0.0);
+    float previous_y = 0.0;
+    float previous_dist = 0.0;
     for (int i=0; i<u_raymarch_max_steps; i++ ) {
         vec3 scan_pos = ray_origin + raymarch_dist * ray_direction;
         float field_y = field_height(scan_pos.xz);
@@ -71,8 +80,14 @@ vec3 raymarch_scene(vec3 ray_origin, vec3 ray_direction) {
                 color =  max(color, vec3(0.0, 1.0, 1.0));
             }
         }
-        //raymarch_dist += u_raymarch_delta;
-        raymarch_dist += u_raymarch_delta * float(i); // Trick from https://iquilezles.org/articles/terrainmarching/
+        previous_y = field_y;
+        previous_dist = raymarch_dist;
+        if (u_with_linear_steps) {
+            raymarch_dist += u_raymarch_delta * float(i) ; // Trick from https://iquilezles.org/articles/terrainmarching/
+        }
+        else {
+            raymarch_dist += u_raymarch_delta;
+        }
     }
     return color;
 }
@@ -84,10 +99,27 @@ void main() {
     vec2 canvas_local_pos = (v_uv -0.5) * 2.0; // center coordinates
     canvas_local_pos *= vec2(ratio, 1.0); // fix width
 
+    // Prepare camera rotation matrices
+    float yc = cos(radians(u_yaw));
+    float ys = sin(radians(u_yaw));
+    mat3 yam_rotation = mat3(
+        yc, 0.0, -ys,
+        0.0, 1.0, 0.0,
+        ys, 0.0, yc
+    );
+    float pc = cos(radians(u_pitch));
+    float ps = sin(radians(u_pitch));
+    mat3 pitch_rotation = mat3(
+        1.0, 0.0, 0.0,
+        0.0, pc, ps,
+        0.0, -ps, pc
+    );
+
     // Camera parameters
-    vec3 camera_eye = vec3(u_shift_x, u_shift_y, u_shift_z);
-    vec3 camera_target = vec3(0.0, 0.0, 0.0);
     float canvas_distance = u_focal_length;
+    vec3 camera_eye = vec3(u_shift_x, u_shift_y, u_shift_z);
+    vec3 camera_target = camera_eye +  pitch_rotation * yam_rotation * vec3(0.0, 0.0, -canvas_distance);
+
 
     // Transform canvas coordinates
     vec3 camera_axis_z = normalize(camera_target - camera_eye);
