@@ -1,12 +1,18 @@
 "use client";
 
-import { NumberInput, Switch } from "@mantine/core";
+import { NumberInput, Select, Switch } from "@mantine/core";
 import fragmentShader from "./fragment.glsl";
 import { FragmentLogic, FragmentView } from "@/components/shaders/FragmentView";
 import styles from "../../../styles/shaderControl.module.css";
 import { useUniform } from "@/components/shaders/uniforms";
 
+
+const VIEW_TYPE = ["Sun Rays", "Normal Field", "Depth Field"];
+
+
 function ValueNoiseRaymarchControl({controlUiTunnel}: FragmentLogic) {
+
+    const [viewType, setViewType] = useUniform<number>("u_view_type", 0);
 
     const [gizmos, setGizmos] = useUniform("u_with_gizmos", false);
 
@@ -33,6 +39,14 @@ function ValueNoiseRaymarchControl({controlUiTunnel}: FragmentLogic) {
     return (
         <ControlUiTunnel>
             <div className={styles.shaderControlWrapper}>
+                <Select
+                    className={styles.shaderControl}
+                    label="View type"
+                    placeholder="Pick value"
+                    data={VIEW_TYPE}
+                    value={VIEW_TYPE[viewType]}
+                    onChange={(e) => setViewType(VIEW_TYPE.indexOf(e!))}
+                />
                 <NumberInput className={styles.shaderControl} label="Number of frequences" onChange={setFreqCount} value={freqCount} min={1} max={10} allowDecimal={false} />
                 <NumberInput className={styles.shaderControl} label="Base frequence" onChange={setFreqBase} value={freqBase} min={0.0} decimalScale={2} />
                 <NumberInput className={styles.shaderControl} label="Lacunarity" onChange={setLacunarity} value={lacunarity} min={0.0} step={0.1} decimalScale={2} />

@@ -1,5 +1,6 @@
 #pragma glslify: random = require(../../../glsl-modules/random)
 
+uniform int u_view_type;
 uniform bool u_with_gizmos;
 uniform uint u_freq_count;
 uniform float u_freq_base;
@@ -17,7 +18,12 @@ uniform float u_yaw;
 
 varying vec2 v_uv;
 
+const vec3 SUN_DIRECTION = normalize(vec3(1.0, 0.0, -1.0));
 const float AXIS_LINE_PRECISION = 0.01;
+
+const int VIEW_SUN_RAYS = 0;
+const int VIEW_NORMALS = 1;
+const int VIEW_DEPTH = 2;
 
 
 float average_noise_smoothstep(vec2 scaled_uv) {
@@ -45,13 +51,25 @@ float fbm(vec2 uv, float freq_base, uint freq_count, float gain, float lacunarit
     return noise_val/total_amplitude;
 }
 
-float field_height(vec2 uv) {    
+float field_height(vec2 uv) {
+    // TODO: scale field
     return fbm(uv, u_freq_base, u_freq_count, u_gain, u_lacunarity);
 }
 
-//float field_height(vec2 uv) {
-//    return random(floor(uv* u_freq_base)) ;
-//}
+vec3 field_normal(vec2 uv) {
+    // We compute the gradient of F(x, y, z) = field_heigh(x, y) - z = 0
+    // It is a level set for which the normal is the gradient
+    // Derivate is approximated using central difference ((f(x+h) - f(x-h)) / (2h) with h tiny)
+    // https://stackoverflow.com/questions/49640250/calculate-normals-from-heightmap
+    // https://en.wikipedia.org/wiki/Level_set#Level_sets_versus_the_gradient
+    // https://math.stackexchange.com/questions/2459214/is-the-gradient-a-surface-normal-vector-or-does-it-point-in-the-direction-of-max
+    vec2 e = vec2(0.00001, 0.0);
+    return normalize(vec3(
+        field_height(uv + e.xy) - field_height(uv - e.xy),
+        field_height(uv + e.yx) - field_height(uv - e.yx),
+        -2.0*e.x
+    ));
+}
 
 vec3 raymarch_scene(vec3 ray_origin, vec3 ray_direction) {
     float raymarch_dist = 0.0;
@@ -62,7 +80,16 @@ vec3 raymarch_scene(vec3 ray_origin, vec3 ray_direction) {
         vec3 scan_pos = ray_origin + raymarch_dist * ray_direction;
         float field_z = field_height(scan_pos.xy);
         if (scan_pos.z <= field_z) {
-            return vec3(1.0 - float(i) / float(u_raymarch_max_steps));
+            // TODO: need to better interpolate right intersection point when using increasing steps
+            switch (u_view_type) {
+                case VIEW_NORMALS:
+                    return abs(field_normal(scan_pos.xy));
+                case VIEW_SUN_RAYS:
+                    return vec3(dot(field_normal(scan_pos.xy), SUN_DIRECTION));
+                case VIEW_DEPTH:
+                default:
+                    return vec3(1.0 - float(i) / float(u_raymarch_max_steps));
+            }
         }
         if (u_with_gizmos) {
             // Origin
@@ -129,4 +156,5 @@ void main() {
     vec3 color = raymarch_scene(ray_origin, ray_dir);
 
     gl_FragColor =  vec4(color, 1.0);
+
 }
