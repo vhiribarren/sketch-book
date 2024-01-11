@@ -20,6 +20,7 @@ function ValueNoiseRaymarchControl({controlUiTunnel}: FragmentLogic) {
     const [freqBase, setFreqBase] = useUniform("u_freq_base", 2.0);
     const [lacunarity, setLacunarity] = useUniform("u_lacunarity", 2.0);
     const [gain, setGain] = useUniform("u_gain", 0.5);
+    const [heightCoeff, setHeightCoeff] = useUniform("u_field_height_coeff", 1.0);
 
     const [raymarchMaxSteps, setRaymarchMaxSteps] = useUniform("u_raymarch_max_steps", 50);
     const [raymarchDelta, setRaymarchDelta] = useUniform("u_raymarch_delta", 0.01);
@@ -47,8 +48,9 @@ function ValueNoiseRaymarchControl({controlUiTunnel}: FragmentLogic) {
                     value={VIEW_TYPE[viewType]}
                     onChange={(e) => setViewType(VIEW_TYPE.indexOf(e!))}
                 />
+                <NumberInput className={styles.shaderControl} label="Base frequence" onChange={setFreqBase} value={freqBase} min={0.0} step={0.1} decimalScale={2} />
+                <NumberInput className={styles.shaderControl} label="Field Height Coeff" onChange={setHeightCoeff} value={heightCoeff} min={0.0} step={0.1} decimalScale={2} />
                 <NumberInput className={styles.shaderControl} label="Number of frequences" onChange={setFreqCount} value={freqCount} min={1} max={10} allowDecimal={false} />
-                <NumberInput className={styles.shaderControl} label="Base frequence" onChange={setFreqBase} value={freqBase} min={0.0} decimalScale={2} />
                 <NumberInput className={styles.shaderControl} label="Lacunarity" onChange={setLacunarity} value={lacunarity} min={0.0} step={0.1} decimalScale={2} />
                 <NumberInput className={styles.shaderControl} label="Gain" onChange={setGain} value={gain} min={0.0} step={0.1} decimalScale={2} />
                 <Switch

@@ -2,14 +2,18 @@
 
 uniform int u_view_type;
 uniform bool u_with_gizmos;
+
+uniform float u_field_height_coeff;
 uniform uint u_freq_count;
 uniform float u_freq_base;
 uniform float u_lacunarity;
 uniform float u_gain;
+
 uniform float u_raymarch_delta;
 uniform int u_raymarch_max_steps;
 uniform bool u_with_linear_steps;
 uniform float u_focal_length;
+
 uniform float u_shift_x;
 uniform float u_shift_y;
 uniform float u_shift_z;
@@ -43,7 +47,8 @@ float fbm(vec2 uv, float freq_base, uint freq_count, float gain, float lacunarit
     float amp = 1.0;
     float total_amplitude = 0.0;
     for (uint i = 0u; i < freq_count; i++) {
-        total_amplitude += amp;
+        total_amplitude += amp; 
+        // TODO: rotate the next octave to have better randomness and avoid cumulating artifacts 
         noise_val += amp * average_noise_smoothstep(uv);
         amp *= gain;
         uv *= lacunarity;
@@ -51,9 +56,12 @@ float fbm(vec2 uv, float freq_base, uint freq_count, float gain, float lacunarit
     return noise_val/total_amplitude;
 }
 
+// float field_height(vec2 uv) {
+//     return random(floor(uv* u_freq_base)) ;
+// }
+
 float field_height(vec2 uv) {
-    // TODO: scale field
-    return fbm(uv, u_freq_base, u_freq_count, u_gain, u_lacunarity);
+    return u_field_height_coeff*fbm(uv, u_freq_base, u_freq_count, u_gain, u_lacunarity);
 }
 
 vec3 field_normal(vec2 uv) {
