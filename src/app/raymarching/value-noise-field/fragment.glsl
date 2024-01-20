@@ -82,18 +82,26 @@ vec3 field_normal(vec2 uv) {
 vec3 raymarch_scene(vec3 ray_origin, vec3 ray_direction) {
     float raymarch_dist = 0.0;
     vec3 color = vec3(0.0, 0.0, 0.0);
-    float previous_z = 0.0;
-    float previous_dist = 0.0;
+    float prev_dist = 0.0;
+    float prev_ray_z = 0.0;
+    float prev_field_z = 0.0;
     for (int i=0; i<u_raymarch_max_steps; i++ ) {
         vec3 scan_pos = ray_origin + raymarch_dist * ray_direction;
         float field_z = field_height(scan_pos.xy);
         if (scan_pos.z <= field_z) {
-            // TODO: need to better interpolate right intersection point when using increasing steps
+            // Raymarcher passed the surface
+            // Interpolate intersection point between ray and ideal field
+            float m_ray = (scan_pos.z - prev_ray_z) / (raymarch_dist - prev_dist);
+            float m_field = (field_z - prev_field_z) / (raymarch_dist - prev_dist);
+            float p_ray = prev_ray_z - m_ray * prev_dist;
+            float p_field = prev_field_z - m_field * prev_dist;
+            float interpolated_dist = (p_field - p_ray) / (m_ray - m_field);
+            vec3 interpolated_pos = interpolated_dist * ray_direction;
             switch (u_view_type) {
                 case VIEW_NORMALS:
-                    return abs(field_normal(scan_pos.xy));
+                    return abs(field_normal(interpolated_pos.xy));
                 case VIEW_SUN_RAYS:
-                    return vec3(dot(field_normal(scan_pos.xy), SUN_DIRECTION));
+                    return vec3(dot(field_normal(interpolated_pos.xy), SUN_DIRECTION));
                 case VIEW_DEPTH:
                 default:
                     return vec3(1.0 - float(i) / float(u_raymarch_max_steps));
@@ -115,8 +123,9 @@ vec3 raymarch_scene(vec3 ray_origin, vec3 ray_direction) {
                 color =  max(color, vec3(0.0, 1.0, 1.0));
             }
         }
-        previous_z = field_z;
-        previous_dist = raymarch_dist;
+        prev_dist = raymarch_dist;
+        prev_field_z = field_z;
+        prev_ray_z = scan_pos.z;
         if (u_with_linear_steps) {
             raymarch_dist += u_raymarch_delta * float(i) ; // Trick from https://iquilezles.org/articles/terrainmarching/
         }
