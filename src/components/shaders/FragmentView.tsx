@@ -9,6 +9,7 @@ import { IconAdjustments } from "@tabler/icons-react";
 import styles from "./FragmentView.module.css";
 import tunnel from "tunnel-rat";
 import { UniformsContext } from "./uniforms";
+import { useSearchParams } from "next/navigation";
 
 
 type ChildrenProps = {
@@ -46,6 +47,11 @@ export function FragmentView({
     const [isDrawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(isDesktop);
     const Control = control;
     const ui = tunnel();
+
+    const searchParams = useSearchParams();
+    const hasWithControlQueryParam = searchParams.has("withControl");
+
+    const displayControl = hasWithControlQueryParam || withUi;
 
     const [loadFragment, setLoadFragment] = useState(control ? false : true);
     const [uniforms, setUniforms] = useState({});
@@ -88,7 +94,7 @@ export function FragmentView({
                     }
                 </FragmentCanvas>
 
-                {withUi &&
+                { displayControl &&
                     <Drawer
                         classNames={{ root: styles.drawerRoot, inner: styles.drawerInner, content: styles.drawerContent }}
                         title="Parameters"
@@ -110,7 +116,7 @@ export function FragmentView({
                 
             </Flex>
 
-            {!isDrawerOpened && withUi &&
+            {!isDrawerOpened && displayControl &&
                 <Affix position={{ bottom: 20, right: 20 }}>
                     <ActionIcon onClick={openDrawer} variant="filled" size="xl" radius="xl" aria-label="Settings">
                         <IconAdjustments style={{ width: "70%", height: "70%" }} stroke={1.5} />
