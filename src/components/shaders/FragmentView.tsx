@@ -1,6 +1,6 @@
 "use client";
 
-import { ActionIcon, Affix, Drawer, Flex, Stack, Text, Title } from "@mantine/core";
+import { ActionIcon, Affix, Drawer, Flex, MantineThemeProvider, NumberInput, Select, Slider, Stack, Switch, Text, Title, createTheme } from "@mantine/core";
 import FragmentCanvas from "./FragmentCanvas";
 import React, { useEffect, useRef, useState } from "react";
 import Fragment, { FragmentHandle } from "./Fragment";
@@ -32,6 +32,33 @@ type FragmentViewProps = {
 type Pixels = number;
 
 const DESKTOP_THRESHOLD: Pixels = 680;
+
+
+const THEME_DRAWER_CONTROL = createTheme({
+    components: {
+        NumberInput: NumberInput.extend({
+            defaultProps: {
+                size: "xs",
+            },
+        }),
+        Select: Select.extend({
+            defaultProps: {
+                size: "xs",
+            },
+        }),
+        Switch: Switch.extend({
+            defaultProps: {
+                size: "xs",
+            },
+        }),
+        Slider: Slider.extend({
+            defaultProps: {
+                size: "xs",
+            },
+        }),
+    },
+});
+  
 
 
 export function FragmentView({
@@ -110,7 +137,9 @@ export function FragmentView({
                                 : { target: drawerTargetRef.current as HTMLElement }
                         }
                         position={isMobile ? "bottom" : "right"}>
-                             <ui.Out />
+                            <MantineThemeProvider theme={THEME_DRAWER_CONTROL}>
+                                <ui.Out />
+                            </MantineThemeProvider>
                     </Drawer>
                 }
                 
