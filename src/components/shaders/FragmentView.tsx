@@ -49,6 +49,7 @@ const THEME_DRAWER_CONTROL = createTheme({
         Switch: Switch.extend({
             defaultProps: {
                 size: "xs",
+                labelPosition: "left",
             },
         }),
         Slider: Slider.extend({

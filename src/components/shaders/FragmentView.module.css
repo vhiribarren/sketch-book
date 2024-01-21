@@ -1,5 +1,6 @@
 .drawerRoot {
     height: 100%;
+    overflow: auto;
 }
 
 div:has(> .drawerRoot) {
